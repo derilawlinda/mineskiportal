@@ -1,0 +1,105 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MineskiPortal</title>
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="shortcut icon" />
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,400i,500,500i,700,700i" rel="stylesheet">
+
+
+    <environment include="Development">
+        <link rel="stylesheet" href="~/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="~/css/font-awesome.min.css" />
+        <link rel="stylesheet" href="~/css/style.css" />
+        <link rel="stylesheet" href="~/css/animate.css" />
+        <link rel="stylesheet" type="text/css" href="~/fonts/iconic/css/material-design-iconic-font.min.css">
+        <link rel="stylesheet" type="text/css" href="~/vendor/animate/animate.css">
+        <link rel="stylesheet" type="text/css" href="~/vendor/css-hamburgers/hamburgers.min.css">
+        <link rel="stylesheet" type="text/css" href="~/vendor/animsition/css/animsition.min.css">
+        <link rel="stylesheet" type="text/css" href="~/vendor/select2/select2.min.css">
+        <link rel="stylesheet" type="text/css" href="~/vendor/daterangepicker/daterangepicker.css">
+        <link rel="stylesheet" type="text/css" href="~/css/util.css">
+        <link rel="stylesheet" type="text/css" href="~/css/main.css">
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="~/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="~/css/font-awesome.min.css" />
+        <link rel="stylesheet" href="~/css/style.css" />
+        <link rel="stylesheet" href="~/css/animate.css" />
+        <link rel="stylesheet" type="text/css" href="~/fonts/iconic/css/material-design-iconic-font.min.css">
+        <link rel="stylesheet" type="text/css" href="~/vendor/animate/animate.css">
+        <link rel="stylesheet" type="text/css" href="~/vendor/css-hamburgers/hamburgers.min.css">
+        <link rel="stylesheet" type="text/css" href="~/vendor/animsition/css/animsition.min.css">
+        <link rel="stylesheet" type="text/css" href="~/vendor/select2/select2.min.css">
+        <link rel="stylesheet" type="text/css" href="~/vendor/daterangepicker/daterangepicker.css">
+        <link rel="stylesheet" type="text/css" href="~/css/util.css">
+        <link rel="stylesheet" type="text/css" href="~/css/main.css">
+    </environment>
+</head>
+<body>
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Header section -->
+    <header class="header-section">
+        <div class="container">
+            <!-- logo -->
+            <a class="site-logo" asp-controller="Home" asp-action="Index">
+                <img src="~/img/logo.png" height="35">
+            </a>
+            <div class="user-panel">
+                <a asp-controller="Dashboard" asp-action="Login">Login</a>  /  <a asp-controller="Register" asp-action="Index">Register</a>
+            </div>
+            <!-- responsive -->
+            <div class="nav-switch">
+                <i class="fa fa-bars"></i>
+            </div>
+            <!-- site menu -->
+            <nav class="main-menu">
+                <ul>
+                    @*<li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Review">Review</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Categories">Categories</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Community">Community</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>*@
+
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <!-- Header section end -->
+
+
+
+
+
+    <div class="container body-content" id="bodyContent">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; 2019 - MineskiPortal</p>
+        </footer>
+    </div>
+
+    <environment include="Development">
+        <script src="~/js/jquery-3.2.1.min.js"></script>
+        <script src="~/lib/jquery-ajax-unobtrusive/jquery-ajax-unobtrusive.js"></script>
+
+
+    </environment>
+    <environment exclude="Development">
+
+        <script src="~/js/jquery-3.2.1.min.js"></script>
+        <script src="~/lib/jquery-ajax-unobtrusive/jquery-ajax-unobtrusive.js"></script>
+
+    </environment>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29001.49
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MineskiPortal", "MineskiPortal\MineskiPortal.csproj", "{9CF98B94-B7FE-4738-9B62-AD11A6A3DB63}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9CF98B94-B7FE-4738-9B62-AD11A6A3DB63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CF98B94-B7FE-4738-9B62-AD11A6A3DB63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CF98B94-B7FE-4738-9B62-AD11A6A3DB63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CF98B94-B7FE-4738-9B62-AD11A6A3DB63}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {18A711C7-3DCE-4200-8C53-59C5CC4007F3}
+	EndGlobalSection
+EndGlobal
