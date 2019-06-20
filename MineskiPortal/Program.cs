@@ -14,7 +14,23 @@ namespace MineskiPortal
     {
         public static void Main(string[] args)
         {
-            CreateWebHostBuilder(args).Build().Run();
+            var configuration = new ConfigurationBuilder()
+               .AddCommandLine(args)
+               .Build();
+
+            var hostUrl = configuration["hosturl"];
+            if (string.IsNullOrEmpty(hostUrl))
+                hostUrl = "http://*:5000";
+
+            CreateWebHostBuilder(args)
+                .UseKestrel()
+                .UseUrls(hostUrl)  // <!-- this 
+                .UseContentRoot(Directory.GetCurrentDirectory())
+                .UseIISIntegration()
+                .UseStartup<Startup>()
+                .UseConfiguration(configuration)
+                .Build()
+                .Run();
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>

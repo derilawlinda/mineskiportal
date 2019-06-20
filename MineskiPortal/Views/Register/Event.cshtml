@@ -1,0 +1,288 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Register Event";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts{
+    <script src="~/js/jquery-3.2.1.min.js"></script>
+
+    <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/vendor/animsition/js/animsition.min.js"></script>
+    <script src="~/vendor/bootstrap/js/popper.js"></script>
+    <script src="~/vendor/select2/select2.min.js"></script>
+    <script src="~/vendor/daterangepicker/moment.min.js"></script>
+    <script src="~/vendor/daterangepicker/daterangepicker.js"></script>
+    <script src="~/vendor/countdowntime/countdowntime.js"></script>
+    <script src="~/vendor/noui/nouislider.min.js"></script>
+    <script>
+        var filterBar = document.getElementById('filter-bar');
+
+        noUiSlider.create(filterBar, {
+            start: [1500, 3900],
+            connect: true,
+            range: {
+                'min': 1500,
+                'max': 7500
+            }
+        });
+
+        var skipValues = [
+            document.getElementById('value-lower'),
+            document.getElementById('value-upper')
+        ];
+
+        filterBar.noUiSlider.on('update', function (values, handle) {
+            skipValues[handle].innerHTML = Math.round(values[handle]);
+            $('.contact100-form-range-value input[name="from-value"]').val($('#value-lower').html());
+            $('.contact100-form-range-value input[name="to-value"]').val($('#value-upper').html());
+        });
+    </script>
+    <script src="~/js/main_form.js"></script>
+    <script src="~/js/Intimidatetime.min.js"></script>
+    <script>
+        var datePicker;
+        $(window).on('load', function () {
+            /*------------------
+                Preloder
+            --------------------*/
+            $(".loader").fadeOut();
+            $("#preloder").delay(400).fadeOut("slow");
+
+            datePicker = $('#ex_basic_1').intimidatetime({
+                inline: true,
+                mode : null,
+                previewFormat: null,
+                groups: [
+		            { name: 'date', units: ['day', 'month', 'year'] }
+	            ],
+                events: {
+                    close: function(e, inst) {
+                        return false;
+                    }
+
+                },
+                units: {
+                    day: { map: 'Date', type: 'select', min: 1, max: 31, step: 1, value: null, label : '' },
+                    month: { map: 'Month', type: 'select', min: 0, max: 11, step: 1, format: 'MMM', value: null, label : '' },
+                    year: { map: 'FullYear', type: 'select', range: 100, step: 1, format: 'yyyy', value: null, label : '' }
+                }
+
+            });
+            datePicker.intimidatetime('open');
+
+            $(".js-select2").each(function () {
+                console.log($(this));
+                $(this).select2({
+                    minimumResultsForSearch: 20,
+                    dropdownParent: $(this).next('.dropDownSelect2')
+                });
+            });
+
+             $(".js-select-date").each(function () {
+                $(this).select2({
+                    minimumResultsForSearch: 20
+                });
+              });
+            
+
+
+            
+
+        });
+
+        function objectifyForm(formArray) {//serialize data function
+
+          var returnArray = {};
+          for (var i = 0; i < formArray.length; i++){
+            returnArray[formArray[i]['name']] = formArray[i]['value'];
+          }
+          return returnArray;
+        }
+
+        function sendData() {
+
+            //$(".loader").fadeIn();
+            //$("#preloder").fadeIn();
+
+            var formValues = $("#eventForm").serializeArray();
+            var formObjecValues = objectifyForm(formValues);
+                        
+            if (datePicker.val() === "") {
+                var today = new Date();
+                var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+                formObjecValues["dateofbirth"] = date;
+            } else {
+                var birthDate = new Date(datePicker.val());
+                formObjecValues["dateofbirth"] = birthDate.getFullYear() + '-' + (birthDate.getMonth() + 1) + '-' + birthDate.getDate();
+            }
+            formObjecValues["address"] = $("#address").val();
+
+            $.post('/Register/EventCreate', { Name: formObjecValues["name"],
+                    Gender: formObjecValues["gender"],
+                    DateOfBirth: formObjecValues["dateofbirth"],
+                    Address: formObjecValues["address"],
+                    Email: formObjecValues["email"],
+                    MobileNumber: formObjecValues["mobile"],
+                    MonthlyGamingExpense : formObjecValues["monthlygamingexpense"]}, function (data) {
+                    console.log(data);
+            });
+
+
+        };
+    </script>
+
+    <script>
+        
+
+
+    </script>
+
+}
+
+<link rel="stylesheet" href="~/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="~/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="~/vendor/animate/animate.css" />
+<link rel="stylesheet" type="text/css" href="~/fonts/iconic/css/material-design-iconic-font.min.css">
+<link rel="stylesheet" type="text/css" href="~/vendor/animate/animate.css">
+<link rel="stylesheet" type="text/css" href="~/vendor/css-hamburgers/hamburgers.min.css">
+<link rel="stylesheet" type="text/css" href="~/vendor/animsition/css/animsition.min.css">
+<link rel="stylesheet" type="text/css" href="~/vendor/select2/select2.min.css">
+<link rel="stylesheet" type="text/css" href="~/vendor/daterangepicker/daterangepicker.css">
+<link rel="stylesheet" type="text/css" href="~/vendor/noui/nouislider.min.css">
+<link rel="stylesheet" type="text/css" href="~/css/util_form.css">
+<link rel="stylesheet" type="text/css" href="~/css/main_form.css">
+<link rel="stylesheet" type="text/css" href="~/css/Intimidatetime.min.css">
+
+
+
+<body>
+    <div class="container-contact100">
+        <div class="wrap-contact100">
+            <form class="contact100-form validate-form" id="eventForm">
+                <span class="contact100-form-title">
+                    Register (Event)
+                </span>
+
+                <div class="wrap-input100 validate-input bg1">
+                    <span class="label-input100">Nama</span>
+                    <input class="input100" type="text" name="name" placeholder="Enter Your Name">
+                </div>
+
+                <div class="wrap-input100 validate-input bg1">
+                    <span class="label-input100">Email</span>
+                    <input class="input100" type="text" name="email" placeholder="Enter Your Email ">
+                </div>
+
+                <div class="wrap-input100 validate-input bg1">
+                    <span class="label-input100">No HP</span>
+                    <input class="input100" type="number" name="mobile" placeholder="08123456789">
+                </div>
+
+                <div class="wrap-input100 validate-input bg1 rs1-wrap-input100">
+                    <span class="label-input100">Jenis Kelamin</span>
+                    <select class="js-select2" name="gender">
+                        <option value="">Jenis Kelamin</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                    <div class="dropDownSelect2"></div>
+                </div>
+
+                <div class="wrap-input100 bg1 rs1-wrap-input100">
+                    <span class="label-input100">Tanggal lahir</span>
+                    <div id="ex_basic_1"> </div>
+                </div>
+
+                <div class="wrap-input100 validate-input bg0">
+                    <span class="label-input100">Alamat</span>
+                    <textarea class="input100" name="message" id="address" placeholder="Alamat"></textarea>
+                </div>
+
+                <div class="wrap-input100 input100-select bg1">
+                    <span class="label-input100">Pendidikan</span>
+                    <div>
+                        <select class="js-select2" name="education">
+                            <option value="">Please chooses</option>
+                            <option value="SD">SD</option>
+                            <option value="SMP">SMP</option>
+                            <option value="SMA">SMA</option>
+                            <option value="S1">S1</option>
+                            <option value="S2">S2</option>
+                            <option value="S3">S3</option>
+                        </select>
+                        <div class="dropDownSelect2"></div>
+                    </div>
+                </div>
+
+                <div class="wrap-input100 input100-select bg1">
+                    <span class="label-input100">Monthly expenses for games</span>
+                    <div>
+                        <select class="js-select2" name="monthlygamingexpense">
+                            <option value="">Please chooses</option>
+                            <option value="<500">< 500.000</option>
+                            <option value="500-1000">500.000 - 1.000.000</option>
+                            <option value="1000 - 5000">1.000.000 - 5.000.000</option>
+                            <option value="> 5.000.000">> 5.000.000 </option>
+                        </select>
+                        <div class="dropDownSelect2"></div>
+                    </div>
+                </div>
+
+                @*<div class="w-full dis-none js-show-service">
+            <div class="wrap-contact100-form-radio">
+                <span class="label-input100">What type of products do you sell?</span>
+
+                <div class="contact100-form-radio m-t-15">
+                    <input class="input-radio100" id="radio1" type="radio" name="type-product" value="physical" checked="checked">
+                    <label class="label-radio100" for="radio1">
+                        Phycical Products
+                    </label>
+                </div>
+
+                <div class="contact100-form-radio">
+                    <input class="input-radio100" id="radio2" type="radio" name="type-product" value="digital">
+                    <label class="label-radio100" for="radio2">
+                        Digital Products
+                    </label>
+                </div>
+
+                <div class="contact100-form-radio">
+                    <input class="input-radio100" id="radio3" type="radio" name="type-product" value="service">
+                    <label class="label-radio100" for="radio3">
+                        Services Consulting
+                    </label>
+                </div>
+            </div>
+
+            <div class="wrap-contact100-form-range">
+                <span class="label-input100">Budget *</span>
+
+                <div class="contact100-form-range-value">
+                    $<span id="value-lower">610</span> - $<span id="value-upper">980</span>
+                    <input type="text" name="from-value">
+                    <input type="text" name="to-value">
+                </div>
+
+                <div class="contact100-form-range-bar">
+                    <div id="filter-bar"></div>
+                </div>
+            </div>
+        </div>*@
+
+
+
+                <div class="container-contact100-form-btn">
+                    <button class="contact100-form-btn" onclick="sendData()">
+                        <span>
+                            Submit
+                            <i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>

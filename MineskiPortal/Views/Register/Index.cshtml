@@ -2,8 +2,43 @@
     ViewData["Title"] = "Register";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
+    .tournament-item:hover {
+        background: #ffb320;
+    }
 
+    .tournament-item:hover h4{
+        color: #252525;
+    }
+</style>
 
 <body>
-    aaaaaa
+    <section class="tournaments-section spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-12 p-2">
+                    <a asp-controller="Register" asp-action="Event">
+                        <div class="tournament-item mb-12 mb-lg-0">
+                            <div class="ti-content">
+                                <div class="ti-text d-flex justify-content-center" style="padding-left:0px !important;">
+                                    <h4 style="margin-bottom: 0px !important;">Event</h4>
+                                </div>
+                            </div>
+                        </div>
+                     </a>
+                </div>
+                <div class="col-lg-6 col-md-12 p-2">
+                    <a asp-controller="Register" asp-action="NonEvent">
+                        <div class="tournament-item">
+                            <div class="ti-content">
+                                <div class="ti-text d-flex justify-content-center" style="padding-left:0px !important;">
+                                    <h4 style="margin-bottom: 0px !important;">Non-Event</h4>
+                                </div>
+                            </div>
+                        </div>
+                     </a>
+                </div>
+            </div>
+        </div>
+    </section>
 </body>

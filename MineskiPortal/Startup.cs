@@ -17,6 +17,9 @@ namespace MineskiPortal
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+     
+
+
         }
 
         public IConfiguration Configuration { get; }
@@ -58,6 +61,9 @@ namespace MineskiPortal
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+         
+
         }
     }
 }
