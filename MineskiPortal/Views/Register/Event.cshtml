@@ -104,8 +104,9 @@
 
         function sendData() {
 
-            //$(".loader").fadeIn();
-            //$("#preloder").fadeIn();
+            $(".loader2").fadeIn();
+            $("#preloder2").fadeIn();
+            $("#eventForm").fadeOut();
 
             var formValues = $("#eventForm").serializeArray();
             var formObjecValues = objectifyForm(formValues);
@@ -126,19 +127,24 @@
                     Address: formObjecValues["address"],
                     Email: formObjecValues["email"],
                     MobileNumber: formObjecValues["mobile"],
-                    MonthlyGamingExpense : formObjecValues["monthlygamingexpense"]}, function (data) {
-                    console.log(data);
+                MonthlyGamingExpense: formObjecValues["monthlygamingexpense"]
+            },
+                function (data) {
+                    $(".loader2").hide();
+                    $("#preloder2").hide();
+                    $("#thankyou").fadeIn();
+                    setTimeout(function () {
+                        $("#thankyou").fadeOut('fast', function () {
+                            $("#eventForm").fadeIn();
+                        });
+                    }, 3000);
+
             });
 
 
         };
     </script>
 
-    <script>
-        
-
-
-    </script>
 
 }
 
@@ -156,11 +162,55 @@
 <link rel="stylesheet" type="text/css" href="~/css/main_form.css">
 <link rel="stylesheet" type="text/css" href="~/css/Intimidatetime.min.css">
 
+<style>
+    #preloader2 {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 999999;
+        background: #fff;
+    }
+
+    .loader2 {
+	    width: 40px;
+	    height: 40px;
+	    position: relative;
+	    top: 50%;
+	    left: 50%;
+	    margin-top: -13px;
+	    margin-left: -13px;
+	    border-radius: 60px;
+	    animation: loader 0.8s linear infinite;
+	    -webkit-animation: loader 0.8s linear infinite;
+    }
+
+    .bg-mineski {
+           background-color: #ffb320;
+    }
+
+    .wrap-inputthankyou {
+        width: 100%;
+        position: relative;
+        border: 1px solid #ffb320;
+        border-radius: 13px;
+        padding: 10px 30px 9px 22px;
+        margin-bottom: 20px;
+    }
+
+</style>
+
 
 
 <body>
     <div class="container-contact100">
         <div class="wrap-contact100">
+            <div id="preloader2" style="display:none"></div>
+            <div class="loader2" style="display:none"></div>
+            <div id="thankyou" class="wrap-inputthankyou bg-mineski" style="display:none">
+                <span style="position:relative; left:40%;top:50%">Thank you for registering!</span>
+            </div>
             <form class="contact100-form validate-form" id="eventForm">
                 <span class="contact100-form-title">
                     Register (Event)
@@ -201,6 +251,8 @@
                     <textarea class="input100" name="message" id="address" placeholder="Alamat"></textarea>
                 </div>
 
+
+
                 <div class="wrap-input100 input100-select bg1">
                     <span class="label-input100">Pendidikan</span>
                     <div>
@@ -232,45 +284,45 @@
                 </div>
 
                 @*<div class="w-full dis-none js-show-service">
-            <div class="wrap-contact100-form-radio">
-                <span class="label-input100">What type of products do you sell?</span>
+                <div class="wrap-contact100-form-radio">
+                    <span class="label-input100">What type of products do you sell?</span>
 
-                <div class="contact100-form-radio m-t-15">
-                    <input class="input-radio100" id="radio1" type="radio" name="type-product" value="physical" checked="checked">
-                    <label class="label-radio100" for="radio1">
-                        Phycical Products
-                    </label>
+                    <div class="contact100-form-radio m-t-15">
+                        <input class="input-radio100" id="radio1" type="radio" name="type-product" value="physical" checked="checked">
+                        <label class="label-radio100" for="radio1">
+                            Phycical Products
+                        </label>
+                    </div>
+
+                    <div class="contact100-form-radio">
+                        <input class="input-radio100" id="radio2" type="radio" name="type-product" value="digital">
+                        <label class="label-radio100" for="radio2">
+                            Digital Products
+                        </label>
+                    </div>
+
+                    <div class="contact100-form-radio">
+                        <input class="input-radio100" id="radio3" type="radio" name="type-product" value="service">
+                        <label class="label-radio100" for="radio3">
+                            Services Consulting
+                        </label>
+                    </div>
                 </div>
 
-                <div class="contact100-form-radio">
-                    <input class="input-radio100" id="radio2" type="radio" name="type-product" value="digital">
-                    <label class="label-radio100" for="radio2">
-                        Digital Products
-                    </label>
-                </div>
+                <div class="wrap-contact100-form-range">
+                    <span class="label-input100">Budget *</span>
 
-                <div class="contact100-form-radio">
-                    <input class="input-radio100" id="radio3" type="radio" name="type-product" value="service">
-                    <label class="label-radio100" for="radio3">
-                        Services Consulting
-                    </label>
-                </div>
-            </div>
+                    <div class="contact100-form-range-value">
+                        $<span id="value-lower">610</span> - $<span id="value-upper">980</span>
+                        <input type="text" name="from-value">
+                        <input type="text" name="to-value">
+                    </div>
 
-            <div class="wrap-contact100-form-range">
-                <span class="label-input100">Budget *</span>
-
-                <div class="contact100-form-range-value">
-                    $<span id="value-lower">610</span> - $<span id="value-upper">980</span>
-                    <input type="text" name="from-value">
-                    <input type="text" name="to-value">
+                    <div class="contact100-form-range-bar">
+                        <div id="filter-bar"></div>
+                    </div>
                 </div>
-
-                <div class="contact100-form-range-bar">
-                    <div id="filter-bar"></div>
-                </div>
-            </div>
-        </div>*@
+            </div>*@
 
 
 

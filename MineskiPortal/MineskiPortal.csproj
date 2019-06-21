@@ -29,4 +29,9 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\uploads\" />
+    <Folder Include="wwwroot\UploadedImages\" />
+  </ItemGroup>
+
 </Project>
