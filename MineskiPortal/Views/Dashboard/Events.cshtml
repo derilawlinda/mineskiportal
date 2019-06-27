@@ -1,0 +1,160 @@
+﻿@{
+    Layout = null;
+}
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Raleway:500,600" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+<link href="~/css/dasboard/styles.css" rel="stylesheet" />
+<link href="~/css/dasboard/index.css" rel="stylesheet" />
+
+
+
+<style>
+    .form-group.col-md-6 {
+        width: 250px;
+    }
+
+    #Address {
+        resize: vertical;
+    }
+
+    :-ms-fullscreen, .e-dialog {
+        max-width: 552px;
+    }
+
+    @@media only screen and (max-width: 991px) {
+        .e-dialog.e-control.e-popup {
+            min-width: 300px !important;
+        }
+    }
+
+    @@media only screen and (min-width: 992px) {
+        .e-dialog.e-control.e-popup {
+            min-width: 550px !important;
+            min-height: 415px;
+        }
+
+        .e-bigger .e-dialog.e-control.e-popup,
+        .e-bigger .e-dialog.e-control.e-popup {
+            min-height: 496px;
+        }
+    }
+</style>
+<script src="~/scripts/ej2.min.js"></script>
+<script>
+
+
+    function actionComplete(args) {
+        console.log(args);
+        if (args.requestType === 'save') {
+            console.log(args.data.isNew);
+            if (args.data.isNew == "true") {
+                $.post('/Dashboard/EventCreate', {
+                    EventName: args.data.EventName,
+                    DateFrom: args.data.DateFrom,
+                    DateTo: args.data.DateTo,
+                    Description: args.data.Description
+                })
+            } else {
+                $.post('/Dashboard/EventUpdate', {
+                    Id : args.data.Id,
+                    EventName: args.data.EventName,
+                    DateFrom: args.data.DateFrom,
+                    DateTo: args.data.DateTo,
+                    Description: args.data.Description
+                })
+            }
+
+            
+
+        }
+        if (args.requestType === 'beginEdit' || args.requestType === 'add') {
+            let spinner = ej.popups.createSpinner({ target: args.dialog.element });
+            ej.popups.showSpinner(args.dialog.element);
+
+            if (args.requestType === 'beginEdit') {
+                var ajax = new ej.base.Ajax({
+                    url: "@Url.Action("EditEventPartial","Dashboard")", //render the partial view
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify({ value: args.rowData })
+                });
+                ajax.send().then(function (data) {
+                    appendElement(data, args.form); //Render the edit form with selected record
+                     var picker = new Lightpick({
+                        field: document.getElementById('DateFrom'),
+                        secondField: document.getElementById('DateTo'),
+                        singleDate: false
+                    });
+                    ej.popups.hideSpinner(args.dialog.element);
+                }).catch(function (xhr) {
+                    console.log(xhr);
+                    ej.popups.hideSpinner(args.dialog.element);
+                });
+            }
+            if (args.requestType === 'add') {
+                var ajax = new ej.base.Ajax({
+                    url: "@Url.Action("AddEventPartial","Dashboard")", //render the partial view
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify({ value: args.rowData })
+                });
+                ajax.send().then(function (data) {
+                    appendElement(data, args.form); //Render the edit form with selected record
+                    var picker = new Lightpick({
+                        field: document.getElementById('DateFrom'),
+                        secondField: document.getElementById('DateTo'),
+                        singleDate: false
+                    });
+                    ej.popups.hideSpinner(args.dialog.element);
+                    
+                }).catch(function (xhr) {
+                    console.log(xhr);
+                    ej.popups.hideSpinner(args.dialog.element);
+                });
+            }
+
+        }
+        }
+
+        function appendElement(elementString, form) {
+            form.querySelector("#dialogTemp").innerHTML = elementString;
+            var script = document.createElement('script');
+            script.type = "text/javascript";
+            var serverScript = form.querySelector("#dialogTemp").querySelector('script');
+            script.textContent = serverScript.innerHTML;
+            document.head.appendChild(script);
+            serverScript.remove();
+        }
+</script>
+
+<div class='exp-content-container'>
+    <div>
+        <h1 class="page-title"> Events </h1>
+    </div>
+    <div>
+        <div class="col-md-12 margin-top col-lg-12">
+            <div class="expense-grid-container">
+
+                <ejs-grid id="grid" dataSource="ViewBag.datasource" actionComplete="actionComplete" allowSelection="true" width="100%" height="100%" allowPaging="true" allowTextWrap="false" toolbar="@(new List<string>() { "Add", "Edit"})">
+                    <e-grid-editSettings allowAdding="true" allowEditing="true" mode="Dialog" template='#dialogtemplate'></e-grid-editSettings>
+                    <e-grid-pagesettings pageSize="11"></e-grid-pagesettings>
+                    <e-grid-columns>
+                        <e-grid-column field="EventName" headerText="Nama Event"></e-grid-column>
+                        <e-grid-column field="DateFrom" headerText="Mulai" format="yMd" width="112" editType="datepickeredit"></e-grid-column>
+                        <e-grid-column field="DateTo" headerText="Selesai" format="yMd" width="112" editType="datepickeredit"></e-grid-column>
+                        <e-grid-column field="Description" headerText="Description"></e-grid-column>
+                    </e-grid-columns>
+                </ejs-grid>
+                <ejs-scripts></ejs-scripts>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script id='dialogtemplate' type="text/x-template">
+    <div id="dialogTemp">
+    </div>
+</script>
+

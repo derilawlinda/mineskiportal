@@ -8,6 +8,7 @@ using MineskiPortal.Models;
 using System.Web;
 using System.IO;
 using Microsoft.AspNetCore.Http;
+using Syncfusion.EJ2.Base;
 
 namespace MineskiPortal.Controllers
 {
@@ -22,8 +23,35 @@ namespace MineskiPortal.Controllers
             };
         }
 
-        public IActionResult Event()
+        
+        public IActionResult Event(Int32 Id)
         {
+            using (var db = new LiteDatabase(@"Mineski.db"))
+            {
+                var query = db.GetCollection<Events>("events");
+                var result = query.FindById(Id);
+                if(result == null)
+                {
+                    ViewBag.isEventRunning = false;
+                }
+                else
+                {
+                    ViewBag.eventName = result.EventName;
+                    ViewBag.isEventRunning = true;
+                }
+            }
+
+            return View();
+        }
+
+        public IActionResult ChooseEvent()
+        {
+            using (var db = new LiteDatabase(@"Mineski.db"))
+            {
+                var query = db.GetCollection<Events>("events");
+                var results = query.Find(q => q.DateTo.CompareTo(DateTime.Now.ToShortDateString()) <= 0 );
+                ViewBag.events = results.ToList();
+            }
             return View();
         }
 

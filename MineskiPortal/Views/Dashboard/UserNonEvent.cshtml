@@ -1,0 +1,38 @@
+﻿@{
+    Layout = null;
+}
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Raleway:500,600" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+<link href="~/css/dasboard/styles.css" rel="stylesheet" />
+<link href="~/css/dasboard/index.css" rel="stylesheet" />
+<script src="~/scripts/ej2.min.js"></script>
+
+<script>
+    function load() {
+        console.log(this.columns)
+        this.columns[3].format = { type: 'date', format: 'dd-MM-yyyy' }; // custom date format
+    }
+</script>
+<body>
+    <div>
+        <h1 class="page-title"> Customer from Non Events </h1>
+    </div>
+    <div>
+        <div class="col-md-12 margin-top col-lg-12">
+            <ejs-grid id="Grid" dataSource="ViewBag.datasource" allowSorting="true" height="270" allowGrouping="true" allowPaging="true" load="load">
+               
+                <e-grid-pagesettings pageCount="5"></e-grid-pagesettings>
+                <e-grid-columns>
+                    <e-grid-column field="Id" headerText="ID" type="number" width="150"></e-grid-column>
+                    <e-grid-column field="Name" headerText="Name" type="" width="150"></e-grid-column>
+                    <e-grid-column field="Email" headerText="Email" width="150"></e-grid-column>
+                    <e-grid-column field="Gender" headerText="Gender" width="150"></e-grid-column>
+                    <e-grid-column field="MaritalStatus" headerText="Status" width="150"></e-grid-column>
+                    <e-grid-column field="MobileNumber" headerText="Phone" width="150"></e-grid-column>
+                </e-grid-columns>
+            </ejs-grid>
+            <ejs-scripts></ejs-scripts>
+            </div>
+        </div>
+</body>

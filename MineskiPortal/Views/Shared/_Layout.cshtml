@@ -27,6 +27,17 @@
         <link rel="stylesheet" href="~/css/animate.css" />
       
     </environment>
+
+    <style>
+        .mobile-only {
+            display: none !important;
+          }
+        @@media only screen and (max-width: 768px) {
+          .mobile-only {
+            display: block !important;
+          }
+        }
+    </style>
 </head>
 <body>
     <div id="preloder">
@@ -56,7 +67,9 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="Categories">Categories</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Community">Community</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>*@
-            
+                    <li class="mobile-only"><a asp-area="" asp-controller="Dashboard" asp-action="Login">Login</a></li>
+                    <li class="mobile-only"><a asp-area="" asp-controller="Register" asp-action="Index">Register</a></li>
+
                 </ul>
             </nav>
         </div>

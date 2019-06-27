@@ -1,0 +1,50 @@
+﻿@{ 
+    Layout =  "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+@using Syncfusion.EJ2
+<div id="addexpenseDialog" class="expense-dialog"></div>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <span id="menu-toggle" href="#" class="navbar-toggle e-icon" style="float:left"></span>
+            <div class="navbar-brand samplenameheader"></div>
+            <span id="filter-toggle" href="#" class="navbar-toggle filter-toggle e-icon" style="float:right"></span>
+        </div>
+    </div>
+</nav>
+<div>
+    <aside id="sidebar-indexdefault">
+        <div id="sidebar-wrapper" class="sidebar-toggle">
+            <div class='samplename-header'>
+                <div class='samplename'></div>
+            </div>
+            
+            <div class="page-list align-center nav-list">
+                <div class='nav-item'>
+                    <a class="overview ripple-element" id="nav-overview" href="#/index">Dashboard</a>
+                </div>
+                <div class='nav-item'>
+                    <a class="userEvent ripple-element" id="nav-userEvent" href="#/userEvent">User Event</a>
+                </div>
+                <div class='nav-item'>
+                    <a class="userNonEvent ripple-element" id="nav-userNonEvent" href="#/userNonEvent">User Non Event</a>
+                </div>
+                <div class='nav-item'>
+                    <a class="events ripple-element" id="nav-events" href="#/events">Event</a>
+                </div>
+            </div>
+        </div>
+    </aside>
+</div>
+<div id="sidebarRightpane">
+    <div class="content container-fluid rightpane">
+        <div class="content-wrapper">
+            <div id="content" class="tab-contWWWSent">
+            </div>
+        </div>
+    </div>
+</div>
+<div id="overlay"></div>
+<ejs-scripts></ejs-scripts>
+@Html.EJS().ScriptManager()

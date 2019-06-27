@@ -1,0 +1,41 @@
+﻿<style>
+    .tournament-item:hover {
+        background: #ffb320;
+    }
+
+    .tournament-item:hover h4 {
+        color: #252525;
+    }
+
+    h4 {
+        color: #ffb320;
+        margin-bottom: 20px;
+    }
+</style>
+
+<body>
+    <section class="tournaments-section spad">
+
+        <div class="container">
+            <h4> Choose Event </h4>
+
+            @foreach (var ev in @ViewBag.events)
+            {
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 p-2">
+                        <a asp-controller="Register" asp-action="Event" asp-route-id="@ev.Id">
+                            <div class="tournament-item mb-12 mb-lg-0">
+                                <div class="ti-content">
+                                    <div class="ti-text d-flex justify-content-center" style="padding-left:0px !important;">
+                                        <h4 style="margin-bottom: 0px !important;">@ev.EventName</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+            }
+        </div>
+    </section>
+</body>

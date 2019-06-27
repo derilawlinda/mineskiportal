@@ -7,7 +7,7 @@ namespace MineskiPortal.Models
 {
     public class CustomerEvent
     {
-        public int Id { get; set; }
+        public Int32 Id { get; set; }
         public string Gender { get; set; }
         public string DateOfBirth { get; set; }
         public string Address { get; set; }

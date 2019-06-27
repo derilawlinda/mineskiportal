@@ -53,21 +53,21 @@
 
             datePicker = $('#ex_basic_1').intimidatetime({
                 inline: true,
-                mode : null,
+                mode: null,
                 previewFormat: null,
                 groups: [
-		            { name: 'date', units: ['day', 'month', 'year'] }
-	            ],
+                    { name: 'date', units: ['day', 'month', 'year'] }
+                ],
                 events: {
-                    close: function(e, inst) {
+                    close: function (e, inst) {
                         return false;
                     }
 
                 },
                 units: {
-                    day: { map: 'Date', type: 'select', min: 1, max: 31, step: 1, value: null, label : '' },
-                    month: { map: 'Month', type: 'select', min: 0, max: 11, step: 1, format: 'MMM', value: null, label : '' },
-                    year: { map: 'FullYear', type: 'select', range: 100, step: 1, format: 'yyyy', value: null, label : '' }
+                    day: { map: 'Date', type: 'select', min: 1, max: 31, step: 1, value: null, label: '' },
+                    month: { map: 'Month', type: 'select', min: 0, max: 11, step: 1, format: 'MMM', value: null, label: '' },
+                    year: { map: 'FullYear', type: 'select', range: 100, step: 1, format: 'yyyy', value: null, label: '' }
                 }
 
             });
@@ -81,25 +81,25 @@
                 });
             });
 
-             $(".js-select-date").each(function () {
+            $(".js-select-date").each(function () {
                 $(this).select2({
                     minimumResultsForSearch: 20
                 });
-              });
-            
+            });
 
 
-            
+
+
 
         });
 
         function objectifyForm(formArray) {//serialize data function
 
-          var returnArray = {};
-          for (var i = 0; i < formArray.length; i++){
-            returnArray[formArray[i]['name']] = formArray[i]['value'];
-          }
-          return returnArray;
+            var returnArray = {};
+            for (var i = 0; i < formArray.length; i++) {
+                returnArray[formArray[i]['name']] = formArray[i]['value'];
+            }
+            return returnArray;
         }
 
         function sendData() {
@@ -110,7 +110,7 @@
 
             var formValues = $("#eventForm").serializeArray();
             var formObjecValues = objectifyForm(formValues);
-                        
+
             if (datePicker.val() === "") {
                 var today = new Date();
                 var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
@@ -121,12 +121,13 @@
             }
             formObjecValues["address"] = $("#address").val();
 
-            $.post('/Register/EventCreate', { Name: formObjecValues["name"],
-                    Gender: formObjecValues["gender"],
-                    DateOfBirth: formObjecValues["dateofbirth"],
-                    Address: formObjecValues["address"],
-                    Email: formObjecValues["email"],
-                    MobileNumber: formObjecValues["mobile"],
+            $.post('/Register/EventCreate', {
+                Name: formObjecValues["name"],
+                Gender: formObjecValues["gender"],
+                DateOfBirth: formObjecValues["dateofbirth"],
+                Address: formObjecValues["address"],
+                Email: formObjecValues["email"],
+                MobileNumber: formObjecValues["mobile"],
                 MonthlyGamingExpense: formObjecValues["monthlygamingexpense"]
             },
                 function (data) {
@@ -139,14 +140,17 @@
                         });
                     }, 3000);
 
-            });
+                });
 
 
         };
-    </script>
+
+/**/</script>
 
 
 }
+
+
 
 <link rel="stylesheet" href="~/css/bootstrap.min.css" />
 <link rel="stylesheet" type="text/css" href="~/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
@@ -174,20 +178,20 @@
     }
 
     .loader2 {
-	    width: 40px;
-	    height: 40px;
-	    position: relative;
-	    top: 50%;
-	    left: 50%;
-	    margin-top: -13px;
-	    margin-left: -13px;
-	    border-radius: 60px;
-	    animation: loader 0.8s linear infinite;
-	    -webkit-animation: loader 0.8s linear infinite;
+        width: 40px;
+        height: 40px;
+        position: relative;
+        top: 50%;
+        left: 50%;
+        margin-top: -13px;
+        margin-left: -13px;
+        border-radius: 60px;
+        animation: loader 0.8s linear infinite;
+        -webkit-animation: loader 0.8s linear infinite;
     }
 
     .bg-mineski {
-           background-color: #ffb320;
+        background-color: #ffb320;
     }
 
     .wrap-inputthankyou {
@@ -198,7 +202,6 @@
         padding: 10px 30px 9px 22px;
         margin-bottom: 20px;
     }
-
 </style>
 
 
@@ -212,78 +215,86 @@
                 <span style="position:relative; left:40%;top:50%">Thank you for registering!</span>
             </div>
             <form class="contact100-form validate-form" id="eventForm">
-                <span class="contact100-form-title">
-                    Register (Event)
-                </span>
+                @if (ViewBag.isEventRunning == false)
+                {
+                    <span class="contact100-form-title">
+                        Event does not exist !
+                    </span>
+                }
+                else
+                {
+                    <span class="contact100-form-title">
+                        Register for Event @ViewBag.eventName
+                    </span>
 
-                <div class="wrap-input100 validate-input bg1">
-                    <span class="label-input100">Nama</span>
-                    <input class="input100" type="text" name="name" placeholder="Enter Your Name">
-                </div>
+                    <div class="wrap-input100 validate-input bg1">
+                        <span class="label-input100">Nama</span>
+                        <input class="input100" type="text" name="name" placeholder="Enter Your Name">
+                    </div>
 
-                <div class="wrap-input100 validate-input bg1">
-                    <span class="label-input100">Email</span>
-                    <input class="input100" type="text" name="email" placeholder="Enter Your Email ">
-                </div>
+                    <div class="wrap-input100 validate-input bg1">
+                        <span class="label-input100">Email</span>
+                        <input class="input100" type="text" name="email" placeholder="Enter Your Email ">
+                    </div>
 
-                <div class="wrap-input100 validate-input bg1">
-                    <span class="label-input100">No HP</span>
-                    <input class="input100" type="number" name="mobile" placeholder="08123456789">
-                </div>
+                    <div class="wrap-input100 validate-input bg1">
+                        <span class="label-input100">No HP</span>
+                        <input class="input100" type="number" name="mobile" placeholder="08123456789">
+                    </div>
 
-                <div class="wrap-input100 validate-input bg1 rs1-wrap-input100">
-                    <span class="label-input100">Jenis Kelamin</span>
-                    <select class="js-select2" name="gender">
-                        <option value="">Jenis Kelamin</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                    </select>
-                    <div class="dropDownSelect2"></div>
-                </div>
-
-                <div class="wrap-input100 bg1 rs1-wrap-input100">
-                    <span class="label-input100">Tanggal lahir</span>
-                    <div id="ex_basic_1"> </div>
-                </div>
-
-                <div class="wrap-input100 validate-input bg0">
-                    <span class="label-input100">Alamat</span>
-                    <textarea class="input100" name="message" id="address" placeholder="Alamat"></textarea>
-                </div>
-
-
-
-                <div class="wrap-input100 input100-select bg1">
-                    <span class="label-input100">Pendidikan</span>
-                    <div>
-                        <select class="js-select2" name="education">
-                            <option value="">Please chooses</option>
-                            <option value="SD">SD</option>
-                            <option value="SMP">SMP</option>
-                            <option value="SMA">SMA</option>
-                            <option value="S1">S1</option>
-                            <option value="S2">S2</option>
-                            <option value="S3">S3</option>
+                    <div class="wrap-input100 validate-input bg1 rs1-wrap-input100">
+                        <span class="label-input100">Jenis Kelamin</span>
+                        <select class="js-select2" name="gender">
+                            <option value="">Jenis Kelamin</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
                         </select>
                         <div class="dropDownSelect2"></div>
                     </div>
-                </div>
 
-                <div class="wrap-input100 input100-select bg1">
-                    <span class="label-input100">Monthly expenses for games</span>
-                    <div>
-                        <select class="js-select2" name="monthlygamingexpense">
-                            <option value="">Please chooses</option>
-                            <option value="<500">< 500.000</option>
-                            <option value="500-1000">500.000 - 1.000.000</option>
-                            <option value="1000 - 5000">1.000.000 - 5.000.000</option>
-                            <option value="> 5.000.000">> 5.000.000 </option>
-                        </select>
-                        <div class="dropDownSelect2"></div>
+                    <div class="wrap-input100 bg1 rs1-wrap-input100">
+                        <span class="label-input100">Tanggal lahir</span>
+                        <div id="ex_basic_1"> </div>
                     </div>
-                </div>
 
-                @*<div class="w-full dis-none js-show-service">
+                    <div class="wrap-input100 validate-input bg0">
+                        <span class="label-input100">Alamat</span>
+                        <textarea class="input100" name="message" id="address" placeholder="Alamat"></textarea>
+                    </div>
+
+
+
+                    <div class="wrap-input100 input100-select bg1">
+                        <span class="label-input100">Pendidikan</span>
+                        <div>
+                            <select class="js-select2" name="education">
+                                <option value="">Please chooses</option>
+                                <option value="SD">SD</option>
+                                <option value="SMP">SMP</option>
+                                <option value="SMA">SMA</option>
+                                <option value="S1">S1</option>
+                                <option value="S2">S2</option>
+                                <option value="S3">S3</option>
+                            </select>
+                            <div class="dropDownSelect2"></div>
+                        </div>
+                    </div>
+
+                    <div class="wrap-input100 input100-select bg1">
+                        <span class="label-input100">Monthly expenses for games</span>
+                        <div>
+                            <select class="js-select2" name="monthlygamingexpense">
+                                <option value="">Please chooses</option>
+                                <option value='<500' > < 500.000</option>
+                                <option value="500-1000">500.000 - 1.000.000</option>
+                                <option value="1000 - 5000">1.000.000 - 5.000.000</option>
+                                <option value="> 5.000.000">> 5.000.000 </option>
+                            </select>
+                            <div class="dropDownSelect2"></div>
+                        </div>
+                    </div>
+
+                    @*<div class="w-full dis-none js-show-service">
                 <div class="wrap-contact100-form-radio">
                     <span class="label-input100">What type of products do you sell?</span>
 
@@ -326,14 +337,16 @@
 
 
 
-                <div class="container-contact100-form-btn">
-                    <button class="contact100-form-btn" onclick="sendData()">
-                        <span>
-                            Submit
-                            <i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
-                        </span>
-                    </button>
-                </div>
+                    <div class="container-contact100-form-btn">
+                        <button class="contact100-form-btn" onclick="sendData()">
+                            <span>
+                                Submit
+                                <i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
+                            </span>
+                        </button>
+                    </div>
+                }
+
             </form>
         </div>
     </div>
