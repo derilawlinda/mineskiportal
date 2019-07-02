@@ -1243,7 +1243,7 @@ span.e-label {
 }
 
 .e-gridcontent .e-content {
-  overflow-y: hidden !important;
+  overflow-y: hidden;
 }
 
 .e-gridcontent .e-content .e-tableborder {

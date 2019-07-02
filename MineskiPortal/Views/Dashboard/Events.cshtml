@@ -40,30 +40,38 @@
             min-height: 496px;
         }
     }
+
+    e-dlg-header {
+        display:none;
+    }
 </style>
 <script src="~/scripts/ej2.min.js"></script>
 <script>
 
 
     function actionComplete(args) {
-        console.log(args);
+        
         if (args.requestType === 'save') {
-            console.log(args.data.isNew);
+            console.log(args.data);
             if (args.data.isNew == "true") {
                 $.post('/Dashboard/EventCreate', {
                     EventName: args.data.EventName,
-                    DateFrom: args.data.DateFrom,
-                    DateTo: args.data.DateTo,
+                    DateFrom: args.data.DateFrom.getDate()+"/"+(args.data.DateFrom.getMonth() + 1)+"/" +args.data.DateFrom.getFullYear(),
+                    DateTo: args.data.DateTo.getDate()+"/"+(args.data.DateTo.getMonth() + 1)+"/" +args.data.DateTo.getFullYear(),
                     Description: args.data.Description
-                })
+                }).done(function (data) {
+                    
+                  });
             } else {
                 $.post('/Dashboard/EventUpdate', {
                     Id : args.data.Id,
                     EventName: args.data.EventName,
-                    DateFrom: args.data.DateFrom,
-                    DateTo: args.data.DateTo,
+                    DateFrom: args.data.DateFrom.getDate()+"/"+(args.data.DateFrom.getMonth() + 1)+"/" +args.data.DateFrom.getFullYear(),
+                    DateTo: args.data.DateTo.getDate()+"/"+(args.data.DateTo.getMonth() + 1)+"/" +args.data.DateTo.getFullYear(),
                     Description: args.data.Description
-                })
+                }).done(function (data) {   
+                
+                  });
             }
 
             
@@ -74,6 +82,7 @@
             ej.popups.showSpinner(args.dialog.element);
 
             if (args.requestType === 'beginEdit') {
+                document.getElementById("grid_dialogEdit_wrapper_title").innerHTML = "Detail for " + args.rowData.EventName;
                 var ajax = new ej.base.Ajax({
                     url: "@Url.Action("EditEventPartial","Dashboard")", //render the partial view
                     type: "POST",
@@ -85,8 +94,11 @@
                      var picker = new Lightpick({
                         field: document.getElementById('DateFrom'),
                         secondField: document.getElementById('DateTo'),
-                        singleDate: false
-                    });
+                         singleDate: false,
+                        format:"M/D/YYYY"
+                     });
+                    console.log(args.rowData);
+                    picker.setDateRange(args.rowData.DateFrom, args.rowData.DateTo)
                     ej.popups.hideSpinner(args.dialog.element);
                 }).catch(function (xhr) {
                     console.log(xhr);
@@ -105,9 +117,11 @@
                     var picker = new Lightpick({
                         field: document.getElementById('DateFrom'),
                         secondField: document.getElementById('DateTo'),
-                        singleDate: false
+                        singleDate: false,
+                        format:"M/D/YYYY"
                     });
                     ej.popups.hideSpinner(args.dialog.element);
+
                     
                 }).catch(function (xhr) {
                     console.log(xhr);
@@ -137,13 +151,15 @@
         <div class="col-md-12 margin-top col-lg-12">
             <div class="expense-grid-container">
 
-                <ejs-grid id="grid" dataSource="ViewBag.datasource" actionComplete="actionComplete" allowSelection="true" width="100%" height="100%" allowPaging="true" allowTextWrap="false" toolbar="@(new List<string>() { "Add", "Edit"})">
+                <ejs-grid id="grid" dataSource="ViewBag.datasource" allowSorting="true" actionComplete="actionComplete" allowSelection="true" width="100%" height="100%" allowPaging="true" allowTextWrap="false" toolbar="@(new List<string>() { "Add", "Edit"})">
                     <e-grid-editSettings allowAdding="true" allowEditing="true" mode="Dialog" template='#dialogtemplate'></e-grid-editSettings>
+                    
                     <e-grid-pagesettings pageSize="11"></e-grid-pagesettings>
                     <e-grid-columns>
+                        <e-grid-column field="Id" headerText="ID"></e-grid-column>
                         <e-grid-column field="EventName" headerText="Nama Event"></e-grid-column>
-                        <e-grid-column field="DateFrom" headerText="Mulai" format="yMd" width="112" editType="datepickeredit"></e-grid-column>
-                        <e-grid-column field="DateTo" headerText="Selesai" format="yMd" width="112" editType="datepickeredit"></e-grid-column>
+                        <e-grid-column type="date" field="DateFrom" headerText="Mulai" customFormat="@(new { type ="date", format="M/d/yyyy" })" width="112" ></e-grid-column>
+                        <e-grid-column type="date" field="DateTo" headerText="Selesai" customFormat="@(new { type ="date", format="M/d/yyyy" })" width="112"></e-grid-column>
                         <e-grid-column field="Description" headerText="Description"></e-grid-column>
                     </e-grid-columns>
                 </ejs-grid>

@@ -82,32 +82,17 @@ crossroads.addRoute('/:lang:', function () {
 
 			if ((currentPage === MineskiDashboard[MineskiDashboard.dashboard]) ||
 				('#/' + MineskiDashboard[MineskiDashboard.dashboard] === window.location.hash)) {
-				console.log(MineskiDashboard.dashboard);
-				document.body.classList.remove('expense-page');
-				document.body.classList.remove('about-page');
 				window.dashboard();
-				document.querySelectorAll('.overview')[0].classList.add('expense-active-page');
-				document.body.classList.add('dashboard-page');
+	
 			} else if ((currentPage === MineskiDashboard[MineskiDashboard.userEvent]) ||
 				('#/' + MineskiDashboard[MineskiDashboard.expense] === window.location.hash)) {
-				document.body.classList.remove('dashboard-page');
-				document.body.classList.remove('about-page');
-				document.querySelectorAll('.expense')[0].classList.add('expense-active-page');
-				document.body.classList.add('expense-page');
+		
 			} else if ((currentPage === MineskiDashboard[MineskiDashboard.userNonEvent]) ||
 				('#/' + MineskiDashboard[MineskiDashboard.about] === window.location.hash)) {
 
-				document.body.classList.remove('expense-page');
-				document.body.classList.remove('dashboard-page');
-				document.querySelectorAll('.about')[0].classList.add('expense-active-page');
-				document.body.classList.add('about-page');
 			} else if ((currentPage === MineskiDashboard[MineskiDashboard.events]) ||
 				('#/' + MineskiDashboard[MineskiDashboard.about] === window.location.hash)) {
 
-				document.body.classList.remove('expense-page');
-				document.body.classList.remove('dashboard-page');
-				document.querySelectorAll('.about')[0].classList.add('expense-active-page');
-				document.body.classList.add('about-page');
 			}
 		});
 	}

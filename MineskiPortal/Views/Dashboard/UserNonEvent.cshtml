@@ -8,19 +8,14 @@
 <link href="~/css/dasboard/index.css" rel="stylesheet" />
 <script src="~/scripts/ej2.min.js"></script>
 
-<script>
-    function load() {
-        console.log(this.columns)
-        this.columns[3].format = { type: 'date', format: 'dd-MM-yyyy' }; // custom date format
-    }
-</script>
+
 <body>
     <div>
         <h1 class="page-title"> Customer from Non Events </h1>
     </div>
     <div>
         <div class="col-md-12 margin-top col-lg-12">
-            <ejs-grid id="Grid" dataSource="ViewBag.datasource" allowSorting="true" height="270" allowGrouping="true" allowPaging="true" load="load">
+            <ejs-grid id="Grid" dataSource="ViewBag.datasource"  allowSorting="true" height="100%" allowGrouping="true" allowPaging="true" >
                
                 <e-grid-pagesettings pageCount="5"></e-grid-pagesettings>
                 <e-grid-columns>

@@ -21,7 +21,7 @@ namespace MineskiPortal.Controllers
         {
             using (var db = new LiteDatabase(@"Mineski.db"))
             {
-                var query = db.GetCollection<CustomerEvent>("customerNonEvents");
+                var query = db.GetCollection<CustomerNonEvent>("customerNonEvents");
                 var results = query.FindAll();
                 ViewBag.datasource = results.ToList();
             }
@@ -58,8 +58,8 @@ namespace MineskiPortal.Controllers
             using (var db = new LiteDatabase(@"Mineski.db"))
             {
                 var query = db.GetCollection<Events>("events");
-                var results = query.FindAll();
-                ViewBag.datasource = results.ToList();
+                var maxId = query.Max(x => x.Id);
+                ViewBag.maxId = maxId.AsInt32 + 1;
             }
             return PartialView("_AddEventDialogTemplate");
         }
@@ -68,13 +68,14 @@ namespace MineskiPortal.Controllers
 
         public IActionResult EditEventPartial([FromBody] CRUDModel<Events> value)
         {
+            Events result;
             using (var db = new LiteDatabase(@"Mineski.db"))
             {
                 var query = db.GetCollection<Events>("events");
-                var results = query.FindAll();
-                ViewBag.datasource = results.ToList();
+                result = query.FindById(value.Value.Id);
+                ViewBag.datasource = result;
             }
-            return PartialView("_EditEventDialogTemplate",value.Value);
+            return PartialView("_EditEventDialogTemplate", result);
         }
 
         public IActionResult Login()
@@ -97,8 +98,8 @@ namespace MineskiPortal.Controllers
                     var eventData = new Events
                     {
                         EventName = EventName,
-                        DateFrom = DateFrom,
-                        DateTo = DateTo,
+                        DateFrom = Convert.ToDateTime(DateFrom).AddHours(7),
+                        DateTo = Convert.ToDateTime(DateTo).AddHours(7),
                         Description = Description
 
                     };
@@ -125,20 +126,13 @@ namespace MineskiPortal.Controllers
                 using (var db = new LiteDatabase(@"Mineski.db"))
                 {
                     // Get customer collection
-                    var events = db.GetCollection<Events>("events");
-
-                    var eventData = new Events
-                    {
-                        Id = Id,
-                        EventName = EventName,
-                        DateFrom = DateFrom,
-                        DateTo = DateTo,
-                        Description = Description
-
-                    };
-
-                    // Insert new customer document (Id will be auto-incremented)
-                    events.Update(eventData);
+                    var collection = db.GetCollection<Events>("events");
+                    var eventUpdate = collection.FindById(Id);
+                    eventUpdate.EventName = EventName;
+                    eventUpdate.DateFrom = Convert.ToDateTime(DateFrom).AddHours(7);
+                    eventUpdate.DateTo = Convert.ToDateTime(DateTo).AddHours(7);
+                    eventUpdate.Description = Description;
+                    collection.Update(eventUpdate);
                 }
             }
             catch (Exception exception)
