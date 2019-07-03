@@ -8,25 +8,48 @@
 <link href="~/css/dasboard/index.css" rel="stylesheet" />
 <script src="~/scripts/ej2.min.js"></script>
 
-<script>
-    
+<script type="text/x-template" id="detailtemplate">
+    <div class="col-md-12">
+        <div class="col-md-3">
+            <div class="row">
+                <span style="font-weight: 500;">Nama: </span> ${Name}
+            </div>
+            <div class="row">
+                <span style="font-weight: 500;">Gender: </span> ${Gender}
+            </div>
+            <div class="row">
+                <span style="font-weight: 500;">Email: </span> ${Email}
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="row">
+                <span style="font-weight: 500;">Phone: </span> ${MobileNumber}
+            </div>
+            <div class="row">
+                <span style="font-weight: 500;">Pengeluaran Per Bulan: </span> ${MonthlyGamingExpense}
+            </div>
+        </div>
+    </div>   
 </script>
+
 <body>
     <div>
         <h1 class="page-title"> Customer from Events </h1>
     </div>
     <div>
         <div class="col-md-12 margin-top col-lg-12">
-            <ejs-grid id="Grid" dataSource="ViewBag.datasource" allowSorting="true" height="300" width="100%" allowGrouping="true" allowPaging="true">
-                <e-grid-pagesettings pageCount="5"></e-grid-pagesettings>
+            <ejs-grid id="Grid" dataSource="ViewBag.datasource" allowFiltering="true" height="300px"  allowSorting="true" width="100%" allowGrouping="true" allowPaging="true" detailTemplate="#detailtemplate">
+                <e-grid-filterSettings type="Menu"></e-grid-filterSettings>
+                <e-grid-pagesettings pageCount="5" ></e-grid-pagesettings>
                 <e-grid-columns>
-                    <e-grid-column field="Id" headerText="ID" type="number" width="150"></e-grid-column>
-                    <e-grid-column field="Name" headerText="Name" type="" width="150"></e-grid-column>
-                    <e-grid-column field="Gender" headerText="Gender" width="150"></e-grid-column>
-                    <e-grid-column field="DateOfBirth" headerText="Tanggal Lahir" width="150" type="date" format="yMd"></e-grid-column>
-                    <e-grid-column field="Email" headerText="Email" width="150"></e-grid-column>
-                    <e-grid-column field="MobileNumber" headerText="Phone" width="150"></e-grid-column>
-                    <e-grid-column field="MonthlyGamingExpense" headerText="Monthly Gaming Expense" width="150"></e-grid-column>
+                    <e-grid-column field="Id" type="number" headerText="ID" width="100"></e-grid-column>
+                    <e-grid-column field="Name" type="string"  headerText="Name" width="150"></e-grid-column>
+                    <e-grid-column field="Gender" filter="@(new { type="CheckBox"})" headerText="Gender" width="150"></e-grid-column>
+                    @*<e-grid-column field="DateOfBirth" headerText="Tanggal Lahir" width="150" type="date" format="yMd"></e-grid-column>*@
+                    <e-grid-column field="Email" type="string" headerText="Email" width="150"></e-grid-column>
+                    <e-grid-column field="MobileNumber" type="string" headerText="Phone" width="150"></e-grid-column>
+                    <e-grid-column field="MonthlyGamingExpense" filter="@(new { type="CheckBox"})" headerText="Monthly Gaming Expense" width="150"></e-grid-column>
                 </e-grid-columns>
             </ejs-grid>
             <ejs-scripts></ejs-scripts>

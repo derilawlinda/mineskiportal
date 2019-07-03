@@ -49,7 +49,7 @@ namespace MineskiPortal.Controllers
             using (var db = new LiteDatabase(@"Mineski.db"))
             {
                 var query = db.GetCollection<Events>("events");
-                var results = query.Find(q => q.DateTo.CompareTo(DateTime.Now.ToShortDateString()) <= 0 );
+                var results = query.Find(q => q.DateTo.CompareTo(DateTime.Now) >= 0 && q.DateFrom.CompareTo(DateTime.Now) <= 0);
                 ViewBag.events = results.ToList();
             }
             return View();
