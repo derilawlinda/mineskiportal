@@ -1,9 +1,16 @@
-﻿@{ 
-    Layout =  "~/Views/Shared/_DashboardLayout.cshtml";
+﻿@{
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
 }
 
 @using Syncfusion.EJ2
+
+
 <div id="addexpenseDialog" class="expense-dialog"></div>
+<style>
+    .info {
+        height: 100px !important;
+    }
+</style>
 <nav class="navbar navbar-default" role="navigation">
     <div class="container">
         <div class="navbar-header">
@@ -19,7 +26,19 @@
             <div class='samplename-header'>
                 <div class='samplename'></div>
             </div>
-            
+            <div class="info align-center">
+                <div class="content nameContent">
+                    <p class="name" id="user-name">Hi, @ViewBag.userName</p>
+                </div>
+                <div class="align-self-md-center" style="padding-left: 33%;">
+                    <form method="post" asp-controller="Dashboard" asp-action="Logout">
+
+                        <input type="submit" value="Logout" class="btn-sm btn-dark" />
+                    </form>
+                </div>
+
+            </div>
+
             <div class="page-list align-center nav-list">
                 <div class='nav-item'>
                     <a class="overview ripple-element" id="nav-overview" href="#/index">Dashboard</a>
@@ -39,12 +58,33 @@
 </div>
 <div id="sidebarRightpane">
     <div class="content container-fluid rightpane">
-        <div class="content-wrapper">
+        <div class="content-wrapper" style="margin-top:2%">
             <div id="content" class="tab-contWWWSent">
+                <div>
+                    <div class="row">
+                        <div class="col-xs-12 col-xl-6 col-lg-6 col-md-6 col-sm-12 card-container">
+                            <div class="e-card card">
+                                <div class="e-card-content">
+                                    <h3 class="card-value" id="eventuser">@ViewBag.userEventCount</h3>
+                                    <span class="card-text">Regestered User from Event</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-xl-6 col-lg-6 col-md-6 col-sm-12 card-container">
+                            <div class="e-card card">
+                                <div class="e-card-content">
+                                    <h3 class="card-value" id='eventnonuser'>@ViewBag.userNonEventCount</h3>
+                                    <span class="card-text">Regestered User Non-Event</span>
+                                </div>
+                            </div>
+                        </div>                        
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 <div id="overlay"></div>
+
 <ejs-scripts></ejs-scripts>
 @Html.EJS().ScriptManager()

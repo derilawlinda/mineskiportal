@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -38,7 +39,9 @@ namespace MineskiPortal
             services.AddSingleton<IFileProvider>(
                 new PhysicalFileProvider(
                     Path.Combine(Directory.GetCurrentDirectory(), "wwwroot","uploads")));
-
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => {
+                options.LoginPath = "/Dashboard/Login/";
+            });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
@@ -58,6 +61,7 @@ namespace MineskiPortal
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {
