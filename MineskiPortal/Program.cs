@@ -20,7 +20,7 @@ namespace MineskiPortal
 
             var hostUrl = configuration["hosturl"];
             if (string.IsNullOrEmpty(hostUrl))
-                hostUrl = "http://*:5000";
+                hostUrl = "http://*:80";
 
             CreateWebHostBuilder(args)
                 .UseKestrel()
