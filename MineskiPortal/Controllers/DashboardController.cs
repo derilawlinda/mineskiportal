@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using MineskiPortal.Models;
 using Syncfusion.EJ2.Base;
 using MineskiPortal.Helpers;
+using System.Globalization;
 
 namespace MineskiPortal.Controllers
 {
@@ -187,8 +188,8 @@ namespace MineskiPortal.Controllers
                     var eventData = new Events
                     {
                         EventName = EventName,
-                        DateFrom = Convert.ToDateTime(DateFrom).AddHours(7),
-                        DateTo = Convert.ToDateTime(DateTo).AddHours(7),
+                        DateFrom = DateTime.ParseExact(DateFrom, "d/M/yyyy", CultureInfo.InvariantCulture),
+                        DateTo = DateTime.ParseExact(DateTo, "d/M/yyyy", CultureInfo.InvariantCulture),
                         Description = Description
 
                     };
@@ -218,8 +219,8 @@ namespace MineskiPortal.Controllers
                     var collection = db.GetCollection<Events>("events");
                     var eventUpdate = collection.FindById(Id);
                     eventUpdate.EventName = EventName;
-                    eventUpdate.DateFrom = Convert.ToDateTime(DateFrom).AddHours(7);
-                    eventUpdate.DateTo = Convert.ToDateTime(DateTo).AddHours(7);
+                    eventUpdate.DateFrom = DateTime.ParseExact(DateFrom, "d/M/yyyy", CultureInfo.InvariantCulture);
+                    eventUpdate.DateTo = DateTime.ParseExact(DateTo, "d/M/yyyy", CultureInfo.InvariantCulture);
                     eventUpdate.Description = Description;
                     collection.Update(eventUpdate);
                 }
