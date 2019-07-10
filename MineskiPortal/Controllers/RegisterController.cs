@@ -80,7 +80,7 @@ namespace MineskiPortal.Controllers
                         Gender = Gender,
                         MobileNumber = MobileNumber,
                         MonthlyGamingExpense = MonthlyGamingExpense,
-                        Name = Name,
+                        Name = Name
 
                     };
 
@@ -116,6 +116,7 @@ namespace MineskiPortal.Controllers
         public async Task<JsonResult> NonEventCreate(string Name, string Address, string Email, string Gender, string MobileNumber,string IdNumber, string MaritalStatus, IFormFile Photo)
         {
 
+            string photoFileName = "";
             try
             {
 
@@ -123,9 +124,12 @@ namespace MineskiPortal.Controllers
                 {
                     // Get customer collection
                     var customerEvents = db.GetCollection<CustomerNonEvent>("customerNonEvents");
-                    if(Photo != null)
+
+
+                    if (Photo != null)
                     {
                         IActionResult actionResult = await UploadFile(Photo);
+                        photoFileName = Photo.FileName;
                     }
 
                     var customerNonEventData = new CustomerNonEvent
@@ -137,7 +141,7 @@ namespace MineskiPortal.Controllers
                         Name = Name,
                         IdNumber = IdNumber,
                         MaritalStatus = MaritalStatus,
-                        Photo = Photo.FileName
+                        Photo = photoFileName
                     };
 
                     // Insert new customer document (Id will be auto-incremented)

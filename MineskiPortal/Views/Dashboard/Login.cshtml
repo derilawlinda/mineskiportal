@@ -26,12 +26,19 @@
 
         });
     </script>
-
 }
-
+<style>
+    .invalid-class {
+  font-family: Poppins-Regular;
+  color: #c80000;
+  font-size: 13px;
+  line-height: 1.4;
+  text-align: left;
+}
+</style>
 
 <body>
-    <div class="limiter">
+    <div class="limiter"> 
         <div class="container-login100">
             <div class="wrap-login100 p-t-1 p-b-20">
                 <form class="login100-form validate-form" asp-route-returnurl="@ViewData["ReturnUrl"]"
@@ -39,12 +46,12 @@
                     <span class="login100-form-title p-b-70">
                         Welcome
                     </span>
-                    <div class="wrap-input100 validate-input m-t-1 m-b-35" data-validate="Enter username">
+                    <div class="wrap-input100 validate-input m-t-1 m-b-35" data-validate="Invalid username">
                         <input class="input100" type="text" name="userName">
                         <span class="focus-input100" data-placeholder="Username"></span>
                     </div>
 
-                    <div class="wrap-input100 validate-input m-b-50" data-validate="Enter password">
+                    <div class="wrap-input100 validate-input m-b-50" data-validate="Invalid password">
                         <input class="input100" type="password" name="password">
                         <span class="focus-input100" data-placeholder="Password"></span>
                     </div>
@@ -55,6 +62,8 @@
                         </button>
                     </div>                    
                 </form>
+                
+
             </div>
         </div>
     </div>

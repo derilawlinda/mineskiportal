@@ -23,7 +23,7 @@ namespace MineskiPortal.Controllers
             }
             using (var db = new LiteDatabase(@"Mineski.db"))
             {
-                var userEventCollection = db.GetCollection<Events>("events");
+                var userEventCollection = db.GetCollection<CustomerEvent>("customerEvents");
                 var userNonEventCollection = db.GetCollection<CustomerNonEvent>("customerNonEvents");
                 var userEventCount = userEventCollection.FindAll().Count();
                 var userNonEventCount = userNonEventCollection.FindAll().Count();
@@ -119,7 +119,10 @@ namespace MineskiPortal.Controllers
 
         public IActionResult Login()
         {
+            string error = HttpContext.Request.Query["error"];
+            ViewBag.error = error;
             return View();
+
         }
 
         [HttpPost]
@@ -135,6 +138,14 @@ namespace MineskiPortal.Controllers
             var db = new LiteDatabase(@"Mineski.db");
             var query = db.GetCollection<Account>("accounts");
             Account result = query.Find(Query.EQ("Username", userName)).FirstOrDefault();
+
+            if(result == null)
+            {
+                return RedirectToAction("", "Dashboard", new
+                {
+                    error = "InvalidUsername"
+                });
+            }
 
             if (PasswordHasher.VerifyPassword(password, result.Salt, result.Password))
             {
@@ -220,5 +231,51 @@ namespace MineskiPortal.Controllers
 
             return Json(new { success = true });
         }
+
+        [HttpPost]
+        public IActionResult CustomerEventDelete(Int32 id)
+        {
+            try
+            {
+
+                using (var db = new LiteDatabase(@"Mineski.db"))
+                {
+                    // Get customer collection
+                    var collection = db.GetCollection<CustomerEvent>("customerEvents");
+                    collection.Delete(id);
+                    
+                }
+            }
+            catch (Exception exception)
+            {
+                return Json(new { success = false, responseText = exception.Message });
+            }
+
+            return Json(new { success = true });
+        }
+
+        [HttpPost]
+        public IActionResult CustomerNonEventDelete(Int32 id)
+        {
+            try
+            {
+
+                using (var db = new LiteDatabase(@"Mineski.db"))
+                {
+                    // Get customer collection
+                    var collection = db.GetCollection<CustomerNonEvent>("customerNonEvents");
+                    collection.Delete(id);
+
+                }
+            }
+            catch (Exception exception)
+            {
+                return Json(new { success = false, responseText = exception.Message });
+            }
+
+            return Json(new { success = true });
+        }
     }
+    
+
 }

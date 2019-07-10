@@ -17,25 +17,6 @@
     <script src="~/vendor/daterangepicker/daterangepicker.js"></script>
     <script src="~/vendor/countdowntime/countdowntime.js"></script>
     <script src="~/vendor/noui/nouislider.min.js"></script>
-    <script>
-        var filterBar = document.getElementById('filter-bar');
-
-        noUiSlider.create(filterBar, {
-            start: [1500, 3900],
-            connect: true,
-            range: {
-                'min': 1500,
-                'max': 7500
-            }
-        });
-
-        var skipValues = [
-            document.getElementById('value-lower'),
-            document.getElementById('value-upper')
-        ];
-
-       
-    </script>
     <script src="~/js/main_form.js"></script>
     <script src="~/js/Intimidatetime.min.js"></script>
     <script>
@@ -82,6 +63,10 @@
             });
 
             $('#nonEventForm').on('submit', function (e) {
+                e.preventDefault();
+                $(".loader2").fadeIn();
+                $("#preloder2").fadeIn();
+                $("#nonEventForm").fadeOut();   
                 var formValues = $("#nonEventForm").serializeArray();
                 var formObjecValues = objectifyForm(formValues);
                 formObjecValues["address"] = $("#address").val();
@@ -105,6 +90,9 @@
                         cache : false,
                         success: function (res) {
                             $(".loader2").hide();
+                            $('#nonEventForm').each(function(){
+                                this.reset();
+                            });
                             $("#preloder2").hide();
                             $("#thankyou").fadeIn();
                             setTimeout(function () {
@@ -114,7 +102,6 @@
                             }, 3000);
                         }
                     });
-                e.preventDefault();
 
             });
 
@@ -129,15 +116,7 @@
           return returnArray;
         };
 
-        function sendData() {
-            $(".loader2").fadeIn();
-            $("#preloder2").fadeIn();
-            $("#nonEventForm").fadeOut();        
-            $('#nonEventForm').submit();
-            
-
-            
-        };
+        
     </script>
 }
 <link rel="stylesheet" href="~/css/bootstrap.min.css" />
@@ -220,7 +199,7 @@
 
                 <div class="wrap-input100 bg0">
                     <span class="label-input100">Alamat</span>
-                    <textarea class="input100" name="address" placeholder="Alamat"></textarea>
+                    <textarea class="input100" name="address" id="address" placeholder="Alamat"></textarea>
                 </div>
 
                 <div class="wrap-input100 bg1">
@@ -304,7 +283,7 @@
 
 
                 <div class="container-contact100-form-btn" >
-                    <button class="contact100-form-btn" onclick="sendData()">
+                    <button class="contact100-form-btn">
                         <span>
                             Submit
                             <i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>

@@ -33,17 +33,31 @@
     </div>   
 </script>
 
+<script>
+    function actionComplete(args) {
+        if (args.requestType == "delete") {
+            $.post('/Dashboard/CustomerEventDelete', {
+                id: args.data[0].Id
+            }).done(function (data) {
+
+            });
+        };    
+        
+     }
+</script>
+
 <body>
     <div>
         <h1 class="page-title"> Customer from Events </h1>
     </div>
     <div>
         <div class="col-md-12 margin-top col-lg-12">
-            <ejs-grid id="Grid" dataSource="ViewBag.datasource" allowFiltering="true" height="300px"  allowSorting="true" width="100%" allowGrouping="true" allowPaging="true" detailTemplate="#detailtemplate">
+            <ejs-grid id="Grid" dataSource="ViewBag.datasource" allowSelection="true" actionComplete="actionComplete" allowFiltering="true" height="300px"  allowSorting="true" width="100%" allowGrouping="true" allowPaging="true" detailTemplate="#detailtemplate" toolbar="@(new List<string>() { "Delete" })">
+                <e-grid-editSettings allowDeleting="true"></e-grid-editSettings>
                 <e-grid-filterSettings type="Menu"></e-grid-filterSettings>
                 <e-grid-pagesettings pageCount="5" ></e-grid-pagesettings>
                 <e-grid-columns>
-                    <e-grid-column field="Id" type="number" headerText="ID" width="100"></e-grid-column>
+                    <e-grid-column field="Id" isPrimaryKey="true" type="number" headerText="ID" width="100"></e-grid-column>
                     <e-grid-column field="Name" type="string"  headerText="Name" width="150"></e-grid-column>
                     <e-grid-column field="Gender" filter="@(new { type="CheckBox"})" headerText="Gender" width="150"></e-grid-column>
                     @*<e-grid-column field="DateOfBirth" headerText="Tanggal Lahir" width="150" type="date" format="yMd"></e-grid-column>*@

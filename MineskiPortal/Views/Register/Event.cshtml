@@ -16,31 +16,7 @@
     <script src="~/vendor/daterangepicker/moment.min.js"></script>
     <script src="~/vendor/daterangepicker/daterangepicker.js"></script>
     <script src="~/vendor/countdowntime/countdowntime.js"></script>
-    <script src="~/vendor/noui/nouislider.min.js"></script>
-    <script>
-        var filterBar = document.getElementById('filter-bar');
-
-        noUiSlider.create(filterBar, {
-            start: [1500, 3900],
-            connect: true,
-            range: {
-                'min': 1500,
-                'max': 7500
-            }
-        });
-
-        var skipValues = [
-            document.getElementById('value-lower'),
-            document.getElementById('value-upper')
-        ];
-
-        filterBar.noUiSlider.on('update', function (values, handle) {
-            skipValues[handle].innerHTML = Math.round(values[handle]);
-            $('.contact100-form-range-value input[name="from-value"]').val($('#value-lower').html());
-            $('.contact100-form-range-value input[name="to-value"]').val($('#value-upper').html());
-        });
-    </script>
-    <script src="~/js/main_form.js"></script>
+     <script src="~/js/main_form.js"></script>
     <script src="~/js/Intimidatetime.min.js"></script>
     <script>
         var datePicker;
@@ -134,6 +110,9 @@
                     $(".loader2").hide();
                     $("#preloder2").hide();
                     $("#thankyou").fadeIn();
+                     $('#eventForm').each(function(){
+                        this.reset();
+                    });
                     setTimeout(function () {
                         $("#thankyou").fadeOut('fast', function () {
                             $("#eventForm").fadeIn();
@@ -287,7 +266,7 @@
                                 <option value="">Please chooses</option>
                                 <option value="< 500.000" > < 500.000</option>
                                 <option value="500.000 - 1.000.000">500.000 - 1.000.000</option>
-                                <option value="1.000.000 - 5000">1.000.000 - 5.000.000</option>
+                                <option value="1.000.000 - 5.000.000">1.000.000 - 5.000.000</option>
                                 <option value="> 5.000.000">> 5.000.000 </option>
                             </select>
                             <div class="dropDownSelect2"></div>
