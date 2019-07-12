@@ -16,7 +16,7 @@ namespace MineskiPortal.Controllers
 {
     public class DashboardController : Controller
     {
-        [Authorize]
+        [Authorize(Roles = "Administrator")]
         public IActionResult Index()
         {
             if(User.Identity.Name != null)
@@ -50,7 +50,7 @@ namespace MineskiPortal.Controllers
             return PartialView("_AddEventDialogTemplate",ViewBag);
         }
 
-        [Authorize]
+        [Authorize(Roles = "Administrator")]
         public IActionResult UserNonEvent()
         {
             using (var db = new LiteDatabase(@"Mineski.db"))
@@ -63,7 +63,7 @@ namespace MineskiPortal.Controllers
 
         }
 
-        [Authorize]
+        [Authorize(Roles = "Administrator")]
         public IActionResult UserEvent()
         {
             using (var db = new LiteDatabase(@"Mineski.db"))
@@ -76,7 +76,7 @@ namespace MineskiPortal.Controllers
 
         }
 
-        [Authorize]
+        [Authorize(Roles = "Administrator")]
         public IActionResult Accounts()
         {
             using (var db = new LiteDatabase(@"Mineski.db"))
@@ -255,7 +255,7 @@ namespace MineskiPortal.Controllers
             return Json(new { success = true });
         }
 
-        [Authorize]
+        [Authorize(Roles = "Administrator")]
         public IActionResult Events()
         {
             using (var db = new LiteDatabase(@"Mineski.db"))
@@ -335,21 +335,31 @@ namespace MineskiPortal.Controllers
                     error = "InvalidUsername"
                 });
             }
-
-            if (PasswordHasher.VerifyPassword(password, result.Salt, result.Password))
+            else
             {
+                if (PasswordHasher.VerifyPassword(password, result.Salt, result.Password))
+                {
 
-                //Create the identity for the user  
-                var identity = new ClaimsIdentity(new[] {
-                    new Claim(ClaimTypes.Name, userName)
+                    //Create the identity for the user  
+                    var identity = new ClaimsIdentity(new[] {
+                    new Claim(ClaimTypes.Name, result.Username),
+                    new Claim(ClaimTypes.Role, result.RoleName)
                 }, CookieAuthenticationDefaults.AuthenticationScheme);
 
-                var principal = new ClaimsPrincipal(identity);
+                    var principal = new ClaimsPrincipal(identity);
 
-                var login = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-
-                return RedirectToAction("", "Dashboard");
+                    var login = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                    if(result.RoleName == "Administrator")
+                    {
+                        return RedirectToAction("", "Dashboard");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Register");
+                    }
+                }
             }
+                       
 
             return View();
         }
