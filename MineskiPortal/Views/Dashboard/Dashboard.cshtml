@@ -1,0 +1,28 @@
+﻿@{
+    Layout = null;
+}
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Raleway:500,600" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+<div style="margin-left:15%">
+    <div class="row">
+        <div class="col-xs-12 col-xl-6 col-lg-6 col-md-6 col-sm-12 card-container">
+            <div class="e-card card">
+                <div class="e-card-content">
+                    <h3 class="card-value" id="eventuser">@ViewBag.userEventCount</h3>
+                    <span class="card-text">Regestered User from Event</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-xl-6 col-lg-6 col-md-6 col-sm-12 card-container">
+            <div class="e-card card">
+                <div class="e-card-content">
+                    <h3 class="card-value" id='eventnonuser'>@ViewBag.userNonEventCount</h3>
+                    <span class="card-text">Regestered User Non-Event</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

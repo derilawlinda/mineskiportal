@@ -1,0 +1,69 @@
+﻿@model Account
+@using Syncfusion.EJ2
+
+<div>
+    <input name="isNew" value="true" hidden="hidden" />
+    <input name="Id" value="@ViewBag.maxId" hidden="hidden" />
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <div class="e-float-input e-control-wrapper">
+                <input asp-for="Username" />
+                <span class="e-float-line"></span>
+                <label asp-for="Username" class="e-float-text e-label-top">Username</label>
+                <div class="error-position" id="userError"></div>
+                <label class="e-error" for="Username" id="Username-info" style="display: none;"></label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <div class="e-float-input e-control-wrapper">
+                <div class="input-group">
+                    <input type="password" class="pwd" asp-for="Password" id="Password" />
+                    <span class="input-group-btn">
+                        <button class="btn-sm btn-default reveal" id="revealPasswordButton" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                    </span>
+                    <label asp-for="Password" class="e-float-text e-label-top">Password</label>
+                </div>
+                <div class="error-position" id="passwordError"></div>
+                <label class="e-error" for="Password" id="Password-info" style="display: none;"></label>
+            </div>
+            </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <div class="e-float-input e-control-wrapper">
+                <div class="input-group">
+                    <input type="password" class="pwd" asp-for="Password" id="passwordConfirm" />
+                    <span class="input-group-btn">
+                        <button class="btn-sm btn-default revealConfirm" id="revealConfirmationPasswordButton" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                    </span>
+                    <label asp-for="Password" class="e-float-text e-label-top">Re-enter Password</label>
+                    <br />
+
+                </div>
+                <div class="error-position" id="passworConfirmationError"></div>
+                <label class="e-error" for="Password" id="PasswordConfirmation-info" style="display: none;"></label>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <ejs-dropdownlist id="RoleName" dataSource="@ViewBag.roleList" placeholder="Role" floatLabelType="Always" popupHeight="300px">
+                <e-dropdownlist-fields text="RoleName" value="RoleName"></e-dropdownlist-fields>
+            </ejs-dropdownlist>
+        </div>
+    </div>
+
+
+
+</div>
+
+
+<ejs-scripts></ejs-scripts>
+

@@ -41,42 +41,82 @@
 <script>
 
 
+
+    function actionBegin(args) {
+        var grid = this;
+        if (args.requestType === 'save') {
+            args.cancel = true;
+            var passwordVal = $("#Password").val();
+            var passwordConfirmVal = $("#passwordConfirm").val();
+             if (passwordVal != passwordConfirmVal) {
+                    $("#Password-info").show();
+                    $("#Password-info").text("Password mismatch");
+                    $("#PasswordConfirmation-info").show();
+                    $("#PasswordConfirmation-info").text("Password mismatch");
+                } else {
+                    $("#Password-info").hide();
+                    $("#PasswordConfirmation-info").hide();
+                 if (args.data.isNew == "true") {
+                     $.post('/Dashboard/AccountCreate', {
+                         Username: args.data.Username,
+                         Password: args.data.Password,
+                         RoleName: args.data.RoleName
+
+                     }).done(function (data) {
+                         if (data.success == false) {
+
+                             $("#Username-info").show();
+                             $("#Username-info").text(data.responseText);
+
+                         } else {
+                             grid.dataSource.push(args.data);
+                             args.dialog.close();
+                             grid.refresh();
+                         }
+                     });
+                 } else {
+                     $.post('/Dashboard/AccountUpdate', {
+                         Id : args.data.Id,
+                         Username: args.data.Username,
+                         Password: args.data.Password,
+                         RoleName: args.data.RoleName
+
+                     }).done(function (data) {
+                         if (data.success == false) {
+
+                             $("#Username-info").show();
+                             $("#Username-info").text(data.responseText);
+
+                         } else {
+                             console.log(grid);
+                             var index = grid.getSelectedRowIndexes()[0]; 
+                             grid.editModule.updateRow(index, args.data); 
+                             args.dialog.close();
+                             grid.refresh();
+                         }
+                     })
+                 }
+
+
+                
+            }
+        }
+    }
     function actionComplete(args) {
         if (args.requestType == "delete") {
-            $.post('/Dashboard/EventDelete', {
+            $.post('/Dashboard/AccountDelete', {
                 id: args.data[0].Id
             }).done(function (data) {
 
             });
         };
 
-
         if (args.requestType === 'save') {
-            console.log(args.data);
-            if (args.data.isNew == "true") {
-                $.post('/Dashboard/EventCreate', {
-                    EventName: args.data.EventName,
-                    DateFrom: args.data.DateFrom.getDate()+"/"+(args.data.DateFrom.getMonth() + 1)+"/" +args.data.DateFrom.getFullYear(),
-                    DateTo: args.data.DateTo.getDate()+"/"+(args.data.DateTo.getMonth() + 1)+"/" +args.data.DateTo.getFullYear(),
-                    Description: args.data.Description
-                }).done(function (data) {
-
-                  });
-            } else {
-                $.post('/Dashboard/EventUpdate', {
-                    Id : args.data.Id,
-                    EventName: args.data.EventName,
-                    DateFrom: args.data.DateFrom.getDate()+"/"+(args.data.DateFrom.getMonth() + 1)+"/" +args.data.DateFrom.getFullYear(),
-                    DateTo: args.data.DateTo.getDate()+"/"+(args.data.DateTo.getMonth() + 1)+"/" +args.data.DateTo.getFullYear(),
-                    Description: args.data.Description
-                }).done(function (data) {
-
-                  });
-            }
-
 
 
         }
+
+
         if (args.requestType === 'beginEdit' || args.requestType === 'add') {
             let spinner = ej.popups.createSpinner({ target: args.dialog.element });
             ej.popups.showSpinner(args.dialog.element);
@@ -84,21 +124,13 @@
             if (args.requestType === 'beginEdit') {
                 document.getElementById("grid_dialogEdit_wrapper_title").innerHTML = "Detail for " + args.rowData.EventName;
                 var ajax = new ej.base.Ajax({
-                    url: "@Url.Action("EditEventPartial","Dashboard")", //render the partial view
+                    url: "@Url.Action("EditAccountPartial","Dashboard")", //render the partial view
                     type: "POST",
                     contentType: "application/json",
                     data: JSON.stringify({ value: args.rowData })
                 });
                 ajax.send().then(function (data) {
                     appendElement(data, args.form); //Render the edit form with selected record
-                     var picker = new Lightpick({
-                        field: document.getElementById('DateFrom'),
-                        secondField: document.getElementById('DateTo'),
-                         singleDate: false,
-                        format:"M/D/YYYY"
-                     });
-                    console.log(args.rowData);
-                    picker.setDateRange(args.rowData.DateFrom, args.rowData.DateTo)
                     ej.popups.hideSpinner(args.dialog.element);
                 }).catch(function (xhr) {
                     console.log(xhr);
@@ -107,18 +139,28 @@
             }
             if (args.requestType === 'add') {
                 var ajax = new ej.base.Ajax({
-                    url: "@Url.Action("AddEventPartial","Dashboard")", //render the partial view
+                    url: "@Url.Action("AddAccountPartial","Dashboard")", //render the partial view
                     type: "POST",
                     contentType: "application/json",
                     data: JSON.stringify({ value: args.rowData })
                 });
                 ajax.send().then(function (data) {
                     appendElement(data, args.form); //Render the edit form with selected record
-                    var picker = new Lightpick({
-                        field: document.getElementById('DateFrom'),
-                        secondField: document.getElementById('DateTo'),
-                        singleDate: false,
-                        format:"M/D/YYYY"
+                    $("#revealPasswordButton").on('click',function() {
+                        var pwd = $("#Password");
+                        if (pwd.attr('type') === 'password') {
+                            pwd.attr('type', 'text');
+                        } else {
+                            pwd.attr('type', 'password');
+                        }
+                    });
+                    $("#revealConfirmationPasswordButton").on('click',function() {
+                        var pwd = $("#passwordConfirm");
+                        if (pwd.attr('type') === 'password') {
+                            pwd.attr('type', 'text');
+                        } else {
+                            pwd.attr('type', 'password');
+                        }
                     });
                     ej.popups.hideSpinner(args.dialog.element);
 
@@ -143,24 +185,26 @@
         }
 </script>
 
+
+
+
+
+
 <div class='exp-content-container'>
     <div>
-        <h1 class="page-title"> Events </h1>
+        <h1 class="page-title"> Accounts </h1>
     </div>
     <div>
         <div class="col-md-12 margin-top col-lg-12">
             <div class="expense-grid-container">
 
-                <ejs-grid id="grid" dataSource="ViewBag.datasource" allowSorting="true" actionComplete="actionComplete" allowSelection="true" width="100%" height="100%" allowPaging="true" allowTextWrap="false" toolbar="@(new List<string>() { "Add", "Edit", "Delete"})">
+                <ejs-grid id="grid" actionBegin="actionBegin" dataSource="ViewBag.datasource" allowSorting="true" actionComplete="actionComplete" allowSelection="true" width="100%" height="100%" allowPaging="true" allowTextWrap="false" toolbar="@(new List<string>() { "Add", "Edit", "Delete"})">
                     <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" mode="Dialog" template='#dialogtemplate'></e-grid-editSettings>
-
                     <e-grid-pagesettings pageSize="11"></e-grid-pagesettings>
                     <e-grid-columns>
                         <e-grid-column field="Id" isPrimaryKey="true" headerText="ID"></e-grid-column>
-                        <e-grid-column field="EventName" headerText="Nama Event"></e-grid-column>
-                        <e-grid-column type="date" field="DateFrom" headerText="Mulai" customFormat="@(new { type ="date", format="M/d/yyyy" })" width="112"></e-grid-column>
-                        <e-grid-column type="date" field="DateTo" headerText="Selesai" customFormat="@(new { type ="date", format="M/d/yyyy" })" width="112"></e-grid-column>
-                        <e-grid-column field="Description" headerText="Description"></e-grid-column>
+                        <e-grid-column field="Username" type="string" headerText="Username"></e-grid-column>
+                        <e-grid-column field="RoleName" headerText="RoleName"></e-grid-column>
                     </e-grid-columns>
                 </ejs-grid>
                 <ejs-scripts></ejs-scripts>

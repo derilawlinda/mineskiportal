@@ -1,0 +1,57 @@
+﻿@model Account
+@using Syncfusion.EJ2
+
+<div>
+    <input name="isNew" value="false" hidden="hidden" />
+    <input asp-for="Id" value="@Model.Id" hidden="hidden" />
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <div class="e-float-input e-control-wrapper">
+                <input asp-for="Username" value="@Model.Username"/>
+                <span class="e-float-line"></span>
+                <label asp-for="Username" class="e-float-text e-label-top">Username</label>
+                <div class="error-position" id="userError"></div>
+                <label class="e-error" for="Username" id="Username-info" style="display: none;"></label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <div class="e-float-input e-control-wrapper">
+                <input type="password" class="pwd" asp-for="Password" id="Password" value="" />
+                <span class="e-float-line"></span>
+                <label asp-for="Password" class="e-float-text e-label-top">Password</label>
+                <div class="error-position" id="passwordError"></div>
+                <label class="e-error" for="Password" id="Password-info" style="display: none;"></label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <div class="e-float-input e-control-wrapper">
+                <input type="password" class="pwd" asp-for="Password" id="passwordConfirm" value="" />
+                <span class="e-float-line"></span>
+                <label asp-for="Password" class="e-float-text e-label-top">Re-enter Password</label>
+                <div class="error-position" id="passworConfirmationError"></div>
+                <label class="e-error" for="Password" id="PasswordConfirmation-info" style="display: none;"></label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <ejs-dropdownlist id="RoleName" dataSource="@ViewBag.roleList" placeholder="Role" floatLabelType="Always" popupHeight="300px" value="@Model.RoleName">
+                <e-dropdownlist-fields text="RoleName" value="RoleName"></e-dropdownlist-fields>
+            </ejs-dropdownlist>
+        </div>
+    </div>
+
+
+
+</div>
+
+
+<ejs-scripts></ejs-scripts>
+

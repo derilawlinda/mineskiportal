@@ -9,11 +9,13 @@ using System.Web;
 using System.IO;
 using Microsoft.AspNetCore.Http;
 using Syncfusion.EJ2.Base;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MineskiPortal.Controllers
 {
     public class RegisterController : Controller
     {
+        [Authorize(Roles = "Administrator, Register")]
         public PartialViewResult Index()
         {
             return new PartialViewResult
@@ -23,7 +25,7 @@ namespace MineskiPortal.Controllers
             };
         }
 
-        
+        [Authorize(Roles = "Administrator, Register")]
         public IActionResult Event(Int32 Id)
         {
             using (var db = new LiteDatabase(@"Mineski.db"))
@@ -44,6 +46,7 @@ namespace MineskiPortal.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Administrator, Register")]
         public IActionResult ChooseEvent()
         {
             using (var db = new LiteDatabase(@"Mineski.db"))
@@ -54,7 +57,7 @@ namespace MineskiPortal.Controllers
             }
             return View();
         }
-
+        [Authorize(Roles = "Administrator, Register")]
         public IActionResult NonEvent()
         {
             return View();

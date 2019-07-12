@@ -4,6 +4,14 @@
 
 @using Syncfusion.EJ2
 
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Raleway:500,600" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+<link href="~/css/dasboard/styles.css" rel="stylesheet" />
+<link href="~/css/dasboard/index.css" rel="stylesheet" />
+
+<script src="~/scripts/ej2.min.js"></script>
 
 <div id="addexpenseDialog" class="expense-dialog"></div>
 <style>
@@ -52,6 +60,9 @@
                 <div class='nav-item'>
                     <a class="events ripple-element" id="nav-events" href="#/events">Event</a>
                 </div>
+                <div class='nav-item'>
+                    <a class="events ripple-element" id="nav-users" href="#/accounts">Accounts</a>
+                </div>
             </div>
         </div>
     </aside>
@@ -60,26 +71,7 @@
     <div class="content container-fluid rightpane">
         <div class="content-wrapper" style="margin-top:2%">
             <div id="content" class="tab-contWWWSent">
-                <div>
-                    <div class="row">
-                        <div class="col-xs-12 col-xl-6 col-lg-6 col-md-6 col-sm-12 card-container">
-                            <div class="e-card card">
-                                <div class="e-card-content">
-                                    <h3 class="card-value" id="eventuser">@ViewBag.userEventCount</h3>
-                                    <span class="card-text">Regestered User from Event</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-xl-6 col-lg-6 col-md-6 col-sm-12 card-container">
-                            <div class="e-card card">
-                                <div class="e-card-content">
-                                    <h3 class="card-value" id='eventnonuser'>@ViewBag.userNonEventCount</h3>
-                                    <span class="card-text">Regestered User Non-Event</span>
-                                </div>
-                            </div>
-                        </div>                        
-                    </div>
-                </div>
+                <partial name="Dashboard" />
             </div>
         </div>
     </div>
