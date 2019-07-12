@@ -342,7 +342,7 @@ namespace MineskiPortal.Controllers
 
                     //Create the identity for the user  
                     var identity = new ClaimsIdentity(new[] {
-                    new Claim(ClaimTypes.Name, userName),
+                    new Claim(ClaimTypes.Name, result.Username),
                     new Claim(ClaimTypes.Role, result.RoleName)
                 }, CookieAuthenticationDefaults.AuthenticationScheme);
 
