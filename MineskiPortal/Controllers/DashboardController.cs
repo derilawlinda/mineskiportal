@@ -348,14 +348,7 @@ namespace MineskiPortal.Controllers
                     var principal = new ClaimsPrincipal(identity);
 
                     var login = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-                    if(result.RoleName == "Administrator")
-                    {
-                        return RedirectToAction("", "Dashboard");
-                    }
-                    else
-                    {
-                        return RedirectToAction("Index", "Register");
-                    }
+                    return RedirectToAction("", "Dashboard");
                 }
             }
                        
