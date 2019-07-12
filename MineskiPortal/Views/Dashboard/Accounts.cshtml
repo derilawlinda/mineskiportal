@@ -198,7 +198,7 @@
         <div class="col-md-12 margin-top col-lg-12">
             <div class="expense-grid-container">
 
-                <ejs-grid id="grid" actionBegin="actionBegin" dataSource="ViewBag.datasource" allowSorting="true" actionComplete="actionComplete" allowSelection="true" width="100%" height="100%" allowPaging="true" allowTextWrap="false" toolbar="@(new List<string>() { "Add", "Edit", "Delete"})">
+                <ejs-grid id="grid" actionBegin="actionBegin" allowFiltering="true" dataSource="ViewBag.datasource" allowSorting="true" actionComplete="actionComplete" allowSelection="true" width="100%" height="100%" allowPaging="true" allowTextWrap="false" toolbar="@(new List<string>() { "Add", "Edit", "Delete"})">
                     <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" mode="Dialog" template='#dialogtemplate'></e-grid-editSettings>
                     <e-grid-pagesettings pageSize="11"></e-grid-pagesettings>
                     <e-grid-columns>
