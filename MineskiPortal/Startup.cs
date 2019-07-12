@@ -35,6 +35,18 @@ namespace MineskiPortal
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
+                
+            });
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.AccessDeniedPath = "/Dashboard/Login";
+                options.Cookie.Name = "MineskiCookies";
+                options.LoginPath = "/Dashboard/Login";
+                // ReturnUrlParameter requires 
+                //using Microsoft.AspNetCore.Authentication.Cookies;
+                options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
+                options.SlidingExpiration = true;
             });
             services.AddSingleton<IFileProvider>(
                 new PhysicalFileProvider(
