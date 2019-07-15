@@ -11,6 +11,7 @@
         public string MaritalStatus { get; set; }
         public string MobileNumber { get; set; }
         public string Photo { get; set; }
+        public string Cabang { get; set; }
 
     }
 }

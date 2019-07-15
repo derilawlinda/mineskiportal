@@ -122,7 +122,7 @@ namespace MineskiPortal.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> NonEventCreate(string Name, string Address, string Email, string Gender, string MobileNumber,string IdNumber, string MaritalStatus, IFormFile Photo)
+        public async Task<JsonResult> NonEventCreate(string Name, string Address, string Email, string Gender, string MobileNumber,string IdNumber, string MaritalStatus, IFormFile Photo, string Cabang)
         {
 
             string photoFileName = "";
@@ -150,7 +150,8 @@ namespace MineskiPortal.Controllers
                         Name = Name,
                         IdNumber = IdNumber,
                         MaritalStatus = MaritalStatus,
-                        Photo = photoFileName
+                        Photo = photoFileName,
+                        Cabang = Cabang
                     };
 
                     // Insert new customer document (Id will be auto-incremented)
