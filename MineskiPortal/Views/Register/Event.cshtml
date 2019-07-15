@@ -114,6 +114,7 @@
             $('#eventForm').each(function () {
                 this.reset();
             });
+            $(".js-select2").val('').trigger('change') ;
             setTimeout(function () {
                 $("#thankyou").fadeOut('fast', function () {
                     $("#eventForm").fadeIn();
@@ -194,7 +195,7 @@
             <div id="thankyou" class="wrap-inputthankyou bg-mineski" style="display:none">
                 <span style="position:relative; left:40%;top:50%">Thank you for registering!</span>
             </div>
-            <form class="contact100-form validate-form" id="eventForm">
+            <form class="contact100-form validate-form" id="eventForm" onsubmit="return false;">
                 @if (ViewBag.isEventRunning == false)
                 {
                     <span class="contact100-form-title">
