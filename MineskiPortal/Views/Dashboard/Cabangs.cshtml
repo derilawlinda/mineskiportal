@@ -43,7 +43,7 @@
 
     function actionComplete(args) {
         if (args.requestType == "delete") {
-            $.post('/Dashboard/EventDelete', {
+            $.post('/Dashboard/CabangDelete', {
                 id: args.data[0].Id
             }).done(function (data) {
 
@@ -53,21 +53,17 @@
 
         if (args.requestType === 'save') {
             if (args.data.isNew == "true") {
-                $.post('/Dashboard/EventCreate', {
-                    EventName: args.data.EventName,
-                    DateFrom: args.data.DateFrom.getDate()+"/"+(args.data.DateFrom.getMonth() + 1)+"/" +args.data.DateFrom.getFullYear(),
-                    DateTo: args.data.DateTo.getDate()+"/"+(args.data.DateTo.getMonth() + 1)+"/" +args.data.DateTo.getFullYear(),
-                    Description: args.data.Description
+                $.post('/Dashboard/CabangCreate', {
+                    Name: args.data.Name,
+                    Address: args.data.Address
                 }).done(function (data) {
 
                   });
             } else {
-                $.post('/Dashboard/EventUpdate', {
+                $.post('/Dashboard/CabangUpdate', {
                     Id : args.data.Id,
-                    EventName: args.data.EventName,
-                    DateFrom: args.data.DateFrom.getDate()+"/"+(args.data.DateFrom.getMonth() + 1)+"/" +args.data.DateFrom.getFullYear(),
-                    DateTo: args.data.DateTo.getDate()+"/"+(args.data.DateTo.getMonth() + 1)+"/" +args.data.DateTo.getFullYear(),
-                    Description: args.data.Description
+                    Name: args.data.Name,
+                    Address: args.data.Address
                 }).done(function (data) {
 
                   });
@@ -79,24 +75,18 @@
         if (args.requestType === 'beginEdit' || args.requestType === 'add') {
             let spinner = ej.popups.createSpinner({ target: args.dialog.element });
             ej.popups.showSpinner(args.dialog.element);
-
+            console.log(args);
             if (args.requestType === 'beginEdit') {
+                args.dialog.header = "Edit Cabang "+ args.rowData.Name
                 document.getElementById("grid_dialogEdit_wrapper_title").innerHTML = "Detail for " + args.rowData.EventName;
                 var ajax = new ej.base.Ajax({
-                    url: "@Url.Action("EditEventPartial","Dashboard")", //render the partial view
+                    url: "@Url.Action("EditCabangPartial","Dashboard")", //render the partial view
                     type: "POST",
                     contentType: "application/json",
                     data: JSON.stringify({ value: args.rowData })
                 });
                 ajax.send().then(function (data) {
-                    appendElement(data, args.form); //Render the edit form with selected record
-                     var picker = new Lightpick({
-                        field: document.getElementById('DateFrom'),
-                        secondField: document.getElementById('DateTo'),
-                         singleDate: false,
-                        format:"M/D/YYYY"
-                     });
-                    picker.setDateRange(args.rowData.DateFrom, args.rowData.DateTo)
+                    appendElement(data, args.form); //Render the edit form with selected record                     
                     ej.popups.hideSpinner(args.dialog.element);
                 }).catch(function (xhr) {
                     console.log(xhr);
@@ -105,19 +95,13 @@
             }
             if (args.requestType === 'add') {
                 var ajax = new ej.base.Ajax({
-                    url: "@Url.Action("AddEventPartial","Dashboard")", //render the partial view
+                    url: "@Url.Action("AddCabangPartial","Dashboard")", //render the partial view
                     type: "POST",
                     contentType: "application/json",
                     data: JSON.stringify({ value: args.rowData })
                 });
                 ajax.send().then(function (data) {
                     appendElement(data, args.form); //Render the edit form with selected record
-                    var picker = new Lightpick({
-                        field: document.getElementById('DateFrom'),
-                        secondField: document.getElementById('DateTo'),
-                        singleDate: false,
-                        format:"M/D/YYYY"
-                    });
                     ej.popups.hideSpinner(args.dialog.element);
 
 
@@ -155,10 +139,8 @@
                     <e-grid-pagesettings pageSize="11"></e-grid-pagesettings>
                     <e-grid-columns>
                         <e-grid-column field="Id" isPrimaryKey="true" headerText="ID"></e-grid-column>
-                        <e-grid-column field="EventName" headerText="Nama Event"></e-grid-column>
-                        <e-grid-column type="date" field="DateFrom" headerText="Mulai" customFormat="@(new { type ="date", format="M/d/yyyy" })" width="112"></e-grid-column>
-                        <e-grid-column type="date" field="DateTo" headerText="Selesai" customFormat="@(new { type ="date", format="M/d/yyyy" })" width="112"></e-grid-column>
-                        <e-grid-column field="Description" headerText="Description"></e-grid-column>
+                        <e-grid-column field="Name" headerText="Nama"></e-grid-column>                        
+                        <e-grid-column field="Address" headerText="Alamat"></e-grid-column>
                     </e-grid-columns>
                 </ejs-grid>
                 <ejs-scripts></ejs-scripts>

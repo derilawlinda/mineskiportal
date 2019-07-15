@@ -37,23 +37,24 @@ namespace MineskiPortal
                 options.MinimumSameSitePolicy = SameSiteMode.None;
                 
             });
-
-            services.ConfigureApplicationCookie(options =>
+            services.Configure<CookieAuthenticationOptions>(options =>
             {
-                options.AccessDeniedPath = "/Dashboard/Login";
+                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.Cookie.Name = "MineskiCookies";
                 options.LoginPath = "/Dashboard/Login";
-                // ReturnUrlParameter requires 
-                //using Microsoft.AspNetCore.Authentication.Cookies;
+                options.AccessDeniedPath = "/Dashboard/Login";
                 options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
                 options.SlidingExpiration = true;
+
             });
             services.AddSingleton<IFileProvider>(
                 new PhysicalFileProvider(
                     Path.Combine(Directory.GetCurrentDirectory(), "wwwroot","uploads")));
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => {
-                options.LoginPath = "/Dashboard/Login/";
-            });
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options => {
+                    options.LoginPath = "/Dashboard/Login/";
+                    options.AccessDeniedPath = "/Dashboard/Login";
+                });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 

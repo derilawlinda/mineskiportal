@@ -88,7 +88,6 @@
                              $("#Username-info").text(data.responseText);
 
                          } else {
-                             console.log(grid);
                              var index = grid.getSelectedRowIndexes()[0]; 
                              grid.editModule.updateRow(index, args.data); 
                              args.dialog.close();

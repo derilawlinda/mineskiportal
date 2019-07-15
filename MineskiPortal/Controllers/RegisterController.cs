@@ -60,11 +60,16 @@ namespace MineskiPortal.Controllers
         [Authorize(Roles = "Administrator, Register")]
         public IActionResult NonEvent()
         {
-            return View();
+            using (var db = new LiteDatabase(@"Mineski.db"))
+            {
+                var query = db.GetCollection<Cabang>("cabangs");
+                ViewBag.cabangs = query.FindAll().ToList();
+            }
+                return View();
         }
 
         [HttpPost]
-        public JsonResult EventCreate(string Name, string Address, string DateOfBirth, string Email, string Gender, string MobileNumber, string MonthlyGamingExpense)
+        public JsonResult EventCreate(string Name, string Address, string DateOfBirth, string Email, string Gender, string MobileNumber, string MonthlyGamingExpense, string EventName)
         {
 
             try
@@ -83,7 +88,8 @@ namespace MineskiPortal.Controllers
                         Gender = Gender,
                         MobileNumber = MobileNumber,
                         MonthlyGamingExpense = MonthlyGamingExpense,
-                        Name = Name
+                        Name = Name,
+                        EventName = EventName
 
                     };
 

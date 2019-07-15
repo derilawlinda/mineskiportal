@@ -15,6 +15,8 @@ namespace MineskiPortal.Models
         public string MobileNumber { get; set; }
         public string MonthlyGamingExpense { get; set; }
         public string Name { get; set; }
+        public string EventName { get; set; }
+
 
     }
 }

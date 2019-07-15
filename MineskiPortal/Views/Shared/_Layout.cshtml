@@ -37,6 +37,10 @@
             display: block !important;
           }
         }
+
+        #logoutForm{
+           margin: 0px !important;
+        }
     </style>
 </head>
 <body>
@@ -53,7 +57,21 @@
             </a>
             
             <div class="user-panel">
-                <a asp-controller="Dashboard" asp-action="Login">Login</a>  /  <a asp-controller="Register" asp-action="Index">Register</a>
+                @if (User.Identity.Name == null)
+                {
+                    @Html.ActionLink("Login", "", "Dashboard") <span> / </span> @Html.ActionLink("Register", "Index", "Register");
+
+
+                }
+                else
+                {
+                    @using (Html.BeginForm("Logout", "Dashboard", FormMethod.Post, new { id = "logoutForm"}))
+                    {
+                        <a href="javascript:document.getElementById('logoutForm').submit()">
+                            <span>Logout</span>
+                        </a>
+                    }
+                }
             </div>
             <!-- responsive -->
             <div class="nav-switch">
@@ -63,12 +81,31 @@
             <nav class="main-menu">
                 <ul>
                     @*<li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Review">Review</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Categories">Categories</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Community">Community</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>*@
-                    <li class="mobile-only"><a asp-area="" asp-controller="Dashboard" asp-action="Login">Login</a></li>
-                    <li class="mobile-only"><a asp-area="" asp-controller="Register" asp-action="Index">Register</a></li>
+        <li><a asp-area="" asp-controller="Home" asp-action="Review">Review</a></li>
+        <li><a asp-area="" asp-controller="Home" asp-action="Categories">Categories</a></li>
+        <li><a asp-area="" asp-controller="Home" asp-action="Community">Community</a></li>
+        <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>*@
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li><a asp-area="" asp-controller="Dashboard" asp-action="Index">Dashboard</a></li>
+                        <li><a asp-area="" asp-controller="Register" asp-action="Index">Register</a></li>
+                        <li class="mobile-only">
+                            @using (Html.BeginForm("Logout", "Dashboard", FormMethod.Post, new { id = "logoutForm" }))
+                            {
+                                <a href="javascript:document.getElementById('logoutForm').submit()">
+                                    <span>Logout</span>
+                                </a>
+                            }
+                        </li>
+
+                    }
+                    else
+                    {
+                        <li class="mobile-only"><a asp-area="" asp-controller="Dashboard" asp-action="Index">Login</a></li>
+                        <li class="mobile-only"><a asp-area="" asp-controller="Register" asp-action="Index">Register</a></li>
+                    }
+
+
 
                 </ul>
             </nav>

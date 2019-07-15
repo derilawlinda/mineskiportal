@@ -23,6 +23,7 @@ var MineskiDashboard;
 	MineskiDashboard[MineskiDashboard["events"] = 3] = "events";
 	MineskiDashboard[MineskiDashboard["dashboard"] = 4] = "dashboard";
 	MineskiDashboard[MineskiDashboard["accounts"] = 5] = "accounts";
+	MineskiDashboard[MineskiDashboard["cabangs"] = 6] = "cabangs";
 
 })(MineskiDashboard || (MineskiDashboard = {}));
 
@@ -49,6 +50,8 @@ function getCurrentPage() {
 		currentPage = MineskiDashboard[MineskiDashboard.events];
 	} else if ((window.location.hash === '#/' + MineskiDashboard[MineskiDashboard.accounts])) {
 		currentPage = MineskiDashboard[MineskiDashboard.accounts];
+	} else if ((window.location.hash === '#/' + MineskiDashboard[MineskiDashboard.cabangs])) {
+		currentPage = MineskiDashboard[MineskiDashboard.cabangs];
 	}
 	console.log(currentPage)
 	return currentPage;
@@ -104,9 +107,9 @@ crossroads.addRoute('/:lang:', function () {
 			}
 		});
 	}
-}).rules = { lang: ['index', 'dashboard', 'userEvent', 'userNonEvent', 'events','accounts'] };
+}).rules = { lang: ['index', 'dashboard', 'userEvent', 'userNonEvent', 'events','accounts','cabangs'] };
 crossroads.bypassed.add(function (request) {
-	var samplePath = ['index', 'dashboard', 'userEvent', 'userNonEvent', 'events','accounts'];
+	var samplePath = ['index', 'dashboard', 'userEvent', 'userNonEvent', 'events','accounts','cabangs'];
 	var hash = request.split(' ')[0];
 	if (samplePath.indexOf(hash) === -1) {
 		location.hash = '#/' + samplePath[0];

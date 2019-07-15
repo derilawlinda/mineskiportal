@@ -293,10 +293,11 @@ namespace MineskiPortal.Controllers
             return PartialView("_EditEventDialogTemplate", result);
         }
 
-        public IActionResult Login()
+        public IActionResult Login(string ReturnUrl)
         {
             string curUrl = HttpContext.Request.QueryString.Value;
             string url = System.Net.WebUtility.UrlDecode(curUrl);
+            
             var index = url.IndexOf('?', url.IndexOf('?') + 1);
 
             if(index > -1)
@@ -309,19 +310,20 @@ namespace MineskiPortal.Controllers
                     ViewBag.error = error;
                 }
             }            
-                     
+            ViewBag.returnUrl = ReturnUrl;
             return View();
 
         }
 
         [HttpPost]
-        public IActionResult Login(string userName, string password)
+        public IActionResult Login(string userName, string password, string returnUrl)
         {
+
+            
             if (!string.IsNullOrEmpty(userName) && string.IsNullOrEmpty(password))
             {
                 return RedirectToAction("Login");
             }
-
             //Check the user name and password  
             //Here can be implemented checking logic from the database  
             var db = new LiteDatabase(@"Mineski.db");
@@ -345,17 +347,15 @@ namespace MineskiPortal.Controllers
                     new Claim(ClaimTypes.Name, result.Username),
                     new Claim(ClaimTypes.Role, result.RoleName)
                 }, CookieAuthenticationDefaults.AuthenticationScheme);
-
                     var principal = new ClaimsPrincipal(identity);
-
                     var login = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-                    if(result.RoleName == "Administrator")
+                    if (returnUrl != null)
                     {
-                        return RedirectToAction("", "Dashboard");
+                        return Redirect(returnUrl);
                     }
                     else
                     {
-                        return RedirectToAction("Index", "Register");
+                        return RedirectToAction("", "Dashboard");
                     }
                 }
             }
@@ -496,6 +496,124 @@ namespace MineskiPortal.Controllers
 
             return Json(new { success = true });
         }
+
+        [HttpPost]
+        public JsonResult CabangCreate(string Name, string Address)
+        {
+
+            try
+            {
+
+                using (var db = new LiteDatabase(@"Mineski.db"))
+                {
+                    // Get customer collection
+                    var cabangs = db.GetCollection<Cabang>("cabangs");
+
+                    var cabangData = new Cabang
+                    {
+                        Name = Name,
+                        Address = Address
+
+                    };
+
+                    // Insert new customer document (Id will be auto-incremented)
+                    cabangs.Insert(cabangData);
+                }
+            }
+            catch (Exception exception)
+            {
+                return Json(new { success = false, responseText = exception.Message });
+            }
+
+            return Json(new { success = true });
+        }
+
+        //CABANG
+
+        [Authorize(Roles = "Administrator")]
+        public IActionResult Cabangs()
+        {
+            using (var db = new LiteDatabase(@"Mineski.db"))
+            {
+                var query = db.GetCollection<Cabang>("cabangs");
+                var results = query.FindAll();
+                ViewBag.datasource = results.ToList();
+            }
+            return View();
+
+        }
+
+        [HttpPost]
+        public JsonResult CabangUpdate(Int32 Id, string Name, string Address)
+        {
+
+            try
+            {
+
+                using (var db = new LiteDatabase(@"Mineski.db"))
+                {
+                    // Get customer collection
+                    var collection = db.GetCollection<Cabang>("cabangs");
+                    var cabangUpdate = collection.FindById(Id);
+                    cabangUpdate.Name = Name;
+                    cabangUpdate.Address = Address;
+                    collection.Update(cabangUpdate);
+                }
+            }
+            catch (Exception exception)
+            {
+                return Json(new { success = false, responseText = exception.Message });
+            }
+
+            return Json(new { success = true });
+        }
+
+        [HttpPost]
+        public IActionResult CabangDelete(Int32 id)
+        {
+            try
+            {
+
+                using (var db = new LiteDatabase(@"Mineski.db"))
+                {
+                    // Get customer collection
+                    var collection = db.GetCollection<Cabang>("cabangs");
+                    collection.Delete(id);
+
+                }
+            }
+            catch (Exception exception)
+            {
+                return Json(new { success = false, responseText = exception.Message });
+            }
+
+            return Json(new { success = true });
+        }
+
+        public IActionResult AddCabangPartial([FromBody] CRUDModel<Cabang> value)
+        {
+            using (var db = new LiteDatabase(@"Mineski.db"))
+            {
+                var query = db.GetCollection<Cabang>("cabangs");
+                var maxId = query.Max(x => x.Id);
+                ViewBag.maxId = maxId.AsInt32 + 1;
+            }
+            return PartialView("_AddCabangDialogTemplate");
+        }
+
+        public IActionResult EditCabangPartial([FromBody] CRUDModel<Cabang> value)
+        {
+            Cabang result;
+            using (var db = new LiteDatabase(@"Mineski.db"))
+            {
+                var query = db.GetCollection<Cabang>("cabangs");
+                result = query.FindById(value.Value.Id);              
+                ViewBag.datasource = result;
+            }
+            return PartialView("_EditCabangDialogTemplate", result);
+        }
+
+
     }
     
 
