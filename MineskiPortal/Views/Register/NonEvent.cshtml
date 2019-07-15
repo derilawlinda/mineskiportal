@@ -94,6 +94,7 @@
                         $('#nonEventForm').each(function () {
                             this.reset();
                         });
+                        $(".js-select2").val('').trigger('change') ;
                         $("#preloder2").hide();
                         $("#thankyou").fadeIn();
                         setTimeout(function () {
@@ -237,11 +238,12 @@
                 <div class="wrap-input100 bg1">
                     <span class="label-input100">Cabang</span>
                     <select class="js-select2" name="cabang">
+                        <option value="">Cabang</option>
                         @foreach (var cabang in ViewBag.cabangs)
                         {
-                        <option value="@cabang.Name">@cabang.Name</option>
+                            <option value="@cabang.Name">@cabang.Name</option>
                         }
-                     
+
                     </select>
                     <div class="dropDownSelect2"></div>
                 </div>
