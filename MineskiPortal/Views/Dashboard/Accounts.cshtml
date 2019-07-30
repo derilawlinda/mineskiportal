@@ -188,7 +188,9 @@ function appendElement(elementString, form) {
 function toolbarClick(args) {
     var gridObj = document.getElementById("grid").ej2_instances[0];
     if (args.item.id === 'grid_excelexport') {
-        gridObj.excelExport();
+        gridObj.excelExport({
+                fileName : "Accounts.xlsx"
+            });
     }
 }
 </script>
