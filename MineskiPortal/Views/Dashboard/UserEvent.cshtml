@@ -41,7 +41,13 @@
             });
         };    
         
-     }
+    }
+    function toolbarClick(args) {
+        var gridObj = document.getElementById("grid").ej2_instances[0];
+        if (args.item.id === 'grid_excelexport') {
+            gridObj.excelExport();
+        }
+    }
 </script>
 
 <body>
@@ -50,7 +56,7 @@
     </div>
     <div>
         <div class="col-md-12 margin-top col-lg-12">
-            <ejs-grid id="grid" dataSource="ViewBag.datasource" allowSelection="true" actionComplete="actionComplete" allowFiltering="true" height="300px"  allowSorting="true" width="100%" allowGrouping="true" allowPaging="true" detailTemplate="#detailtemplate" toolbar="@(new List<string>() { "Delete" })" >
+            <ejs-grid id="grid" dataSource="ViewBag.datasource" allowExcelExport="true" toolbarClick="toolbarClick" allowSelection="true" actionComplete="actionComplete" allowFiltering="true" height="300px"  allowSorting="true" width="100%" allowGrouping="true" allowPaging="true" detailTemplate="#detailtemplate" toolbar="@(new List<string>() { "Delete", "ExcelExport" })" >
                 <e-grid-editSettings allowDeleting="true" mode="Dialog"></e-grid-editSettings>
                 <e-grid-filterSettings type="Menu"></e-grid-filterSettings>
                 <e-grid-pagesettings pageCount="5" ></e-grid-pagesettings>
