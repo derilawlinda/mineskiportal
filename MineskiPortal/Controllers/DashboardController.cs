@@ -11,6 +11,7 @@ using Syncfusion.EJ2.Base;
 using MineskiPortal.Helpers;
 using System.Globalization;
 using System.Collections.Generic;
+using Npgsql;
 
 namespace MineskiPortal.Controllers
 {
@@ -84,6 +85,46 @@ namespace MineskiPortal.Controllers
                 var query = db.GetCollection<Account>("accounts");
                 var results = query.FindAll();
                 ViewBag.datasource = results.ToList();
+            }
+            return View();
+
+        }
+
+        [Authorize(Roles = "Administrator")]
+        public IActionResult GameClicks()
+        {
+            string connstring = String.Format("Server={0};Port={1};" +
+                            "User Id={2};Password={3};Database={4};",
+                            "35.247.132.1", "5432", "postgres",
+                            "mineski1234", "mineski");
+            using (var conn = new NpgsqlConnection(connstring))
+            {
+                conn.Open();
+
+                using (var cmd = new NpgsqlCommand())
+                {
+                    List < GameClicks > gameClicks = new List<GameClicks>();
+                    NpgsqlTransaction tran = conn.BeginTransaction();
+                    NpgsqlDataReader reader;
+                    cmd.Connection = conn;
+                    cmd.CommandText = "SELECT * FROM count_aggregate";
+                    reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        gameClicks.Add(new GameClicks()
+                        {
+                            Name = reader.GetString(reader.GetOrdinal("name")),
+                            Category = reader.GetString(reader.GetOrdinal("category")),
+                            MonthClicks = reader.GetInt16(reader.GetOrdinal("monthly_count")),
+                            WeekClicks = reader.GetInt16(reader.GetOrdinal("weekly_count")),
+                            TodayClicks = reader.GetInt16(reader.GetOrdinal("daily_count")),
+                            TotalClicks = reader.GetInt16(reader.GetOrdinal("total_count")),
+
+                        });
+
+                    }
+                    ViewBag.datasource = gameClicks;
+                }
             }
             return View();
 
