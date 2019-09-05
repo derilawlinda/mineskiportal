@@ -21,7 +21,6 @@
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.jQuery.Unobtrusive.Ajax" Version="3.2.6" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
-    <PackageReference Include="Npgsql" Version="4.0.9" />
     <PackageReference Include="syncfusion.ej2.aspnet.core" Version="17.1.0.47" />
   </ItemGroup>
 

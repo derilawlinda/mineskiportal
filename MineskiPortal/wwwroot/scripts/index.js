@@ -24,7 +24,6 @@ var MineskiDashboard;
 	MineskiDashboard[MineskiDashboard["dashboard"] = 4] = "dashboard";
 	MineskiDashboard[MineskiDashboard["accounts"] = 5] = "accounts";
 	MineskiDashboard[MineskiDashboard["cabangs"] = 6] = "cabangs";
-	MineskiDashboard[MineskiDashboard["gameclicks"] = 6] = "gameclicks";
 
 })(MineskiDashboard || (MineskiDashboard = {}));
 
@@ -53,8 +52,6 @@ function getCurrentPage() {
 		currentPage = MineskiDashboard[MineskiDashboard.accounts];
 	} else if ((window.location.hash === '#/' + MineskiDashboard[MineskiDashboard.cabangs])) {
 		currentPage = MineskiDashboard[MineskiDashboard.cabangs];
-	} else if ((window.location.hash === '#/' + MineskiDashboard[MineskiDashboard.gameclicks])) {
-		currentPage = MineskiDashboard[MineskiDashboard.gameclicks];
 	}
 	console.log(currentPage)
 	return currentPage;
@@ -107,15 +104,12 @@ crossroads.addRoute('/:lang:', function () {
 			} else if ((currentPage === MineskiDashboard[MineskiDashboard.accounts]) ||
 				('#/' + MineskiDashboard[MineskiDashboard.accounts] === window.location.hash)) {
 
-			} else if ((currentPage === MineskiDashboard[MineskiDashboard.gameclicks]) ||
-				('#/' + MineskiDashboard[MineskiDashboard.gameclicks] === window.location.hash)) {
-
 			}
 		});
 	}
-}).rules = { lang: ['index', 'dashboard', 'userEvent', 'userNonEvent', 'events','accounts','cabangs','gameclicks'] };
+}).rules = { lang: ['index', 'dashboard', 'userEvent', 'userNonEvent', 'events','accounts','cabangs'] };
 crossroads.bypassed.add(function (request) {
-	var samplePath = ['index', 'dashboard', 'userEvent', 'userNonEvent', 'events', 'accounts', 'cabangs','gameclicks'];
+	var samplePath = ['index', 'dashboard', 'userEvent', 'userNonEvent', 'events','accounts','cabangs'];
 	var hash = request.split(' ')[0];
 	if (samplePath.indexOf(hash) === -1) {
 		location.hash = '#/' + samplePath[0];
