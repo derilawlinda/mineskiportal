@@ -19,7 +19,7 @@ namespace MineskiPortal.Controllers
         [Authorize(Roles = "Administrator")]
         public IActionResult Index()
         {
-            if(User.Identity.Name != null)
+            if (User.Identity.Name != null)
             {
                 ViewBag.userName = User.Identity.Name;
             }
@@ -47,7 +47,7 @@ namespace MineskiPortal.Controllers
                 ViewBag.userEventCount = userEventCount;
                 ViewBag.userNonEventCount = userNonEventCount;
             }
-            return PartialView("_AddEventDialogTemplate",ViewBag);
+            return PartialView("_AddEventDialogTemplate", ViewBag);
         }
 
         [Authorize(Roles = "Administrator")]
@@ -143,7 +143,7 @@ namespace MineskiPortal.Controllers
                     {
                         CreateUser(Username, Password, RoleName);
                     }
-                }                
+                }
             }
             catch (Exception exception)
             {
@@ -180,13 +180,13 @@ namespace MineskiPortal.Controllers
             {
                 using (var db = new LiteDatabase(@"Mineski.db"))
                 {
-                   
-                    
+
+
 
                     var accounts = db.GetCollection<Account>("accounts");
                     var accountToUpdate = accounts.FindById(Id);
 
-                    if(accountToUpdate.Username.ToString() != Username)
+                    if (accountToUpdate.Username.ToString() != Username)
                     {
                         var findSameName = accounts.Find(x => x.Username.Equals(Username));
                         if (findSameName.Count() > 0)
@@ -207,17 +207,17 @@ namespace MineskiPortal.Controllers
 
             return Json(new { success = true });
         }
-        
+
 
         public static bool UpdateUser(Int32 Id, string Username, string Password, string RoleName)
         {
-            
+
             using (var db = new LiteDatabase(@"Mineski.db"))
             {
                 // Get customer collection
                 var collection = db.GetCollection<Account>("accounts");
                 var accountUpdate = collection.FindById(Id);
-                              
+
                 if (Password != null)
                 {
                     byte[] generatedSalt = PasswordHasher.GenerateSalt();
@@ -297,10 +297,10 @@ namespace MineskiPortal.Controllers
         {
             string curUrl = HttpContext.Request.QueryString.Value;
             string url = System.Net.WebUtility.UrlDecode(curUrl);
-            
+
             var index = url.IndexOf('?', url.IndexOf('?') + 1);
 
-            if(index > -1)
+            if (index > -1)
             {
                 var ouput = string.Concat(url.Substring(0, index), "&", url.Substring(index + 1));
                 var parsed = Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(ouput);
@@ -309,7 +309,7 @@ namespace MineskiPortal.Controllers
                     var error = parsed["error"].ToString();
                     ViewBag.error = error;
                 }
-            }            
+            }
             ViewBag.returnUrl = ReturnUrl;
             return View();
 
@@ -319,7 +319,7 @@ namespace MineskiPortal.Controllers
         public IActionResult Login(string userName, string password, string returnUrl)
         {
 
-            
+
             if (!string.IsNullOrEmpty(userName) && string.IsNullOrEmpty(password))
             {
                 return RedirectToAction("Login");
@@ -330,7 +330,7 @@ namespace MineskiPortal.Controllers
             var query = db.GetCollection<Account>("accounts");
             Account result = query.Find(Query.EQ("Username", userName)).FirstOrDefault();
 
-            if(result == null)
+            if (result == null)
             {
                 return RedirectToAction("", "Dashboard", new
                 {
@@ -359,7 +359,7 @@ namespace MineskiPortal.Controllers
                     }
                 }
             }
-                       
+
 
             return View();
         }
@@ -368,7 +368,7 @@ namespace MineskiPortal.Controllers
         public IActionResult Logout()
         {
             var login = HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
@@ -442,7 +442,7 @@ namespace MineskiPortal.Controllers
                     // Get customer collection
                     var collection = db.GetCollection<CustomerEvent>("customerEvents");
                     collection.Delete(id);
-                    
+
                 }
             }
             catch (Exception exception)
@@ -607,14 +607,26 @@ namespace MineskiPortal.Controllers
             using (var db = new LiteDatabase(@"Mineski.db"))
             {
                 var query = db.GetCollection<Cabang>("cabangs");
-                result = query.FindById(value.Value.Id);              
+                result = query.FindById(value.Value.Id);
                 ViewBag.datasource = result;
             }
             return PartialView("_EditCabangDialogTemplate", result);
         }
 
+        public JsonResult GetAllCabang()
+        {
+
+            using (var db = new LiteDatabase(@"Mineski.db"))
+            {
+                var query = db.GetCollection<Cabang>("cabangs");
+                var results = query.FindAll().Select(x => x.Name);
+                var entitiesJson = new object[] { results };
+                return Json(results);
+            }
+
+
+
+        }
 
     }
-    
-
 }
