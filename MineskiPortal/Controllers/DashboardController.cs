@@ -11,6 +11,7 @@ using Syncfusion.EJ2.Base;
 using MineskiPortal.Helpers;
 using System.Globalization;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace MineskiPortal.Controllers
 {
@@ -619,8 +620,9 @@ namespace MineskiPortal.Controllers
             using (var db = new LiteDatabase(@"Mineski.db"))
             {
                 var query = db.GetCollection<Cabang>("cabangs");
-                var results = query.FindAll().Select(x => x.Name);
-                var entitiesJson = new object[] { results };
+                var results = query.FindAll().Select(c => new {
+                    Name =  c.Name
+                });
                 return Json(results);
             }
 
