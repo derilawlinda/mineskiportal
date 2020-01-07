@@ -1593,7 +1593,7 @@ body {
 }
 
 .page-list {
-  height: 300px;
+  height: 160px;
   position: relative;
 }
 
@@ -1975,7 +1975,7 @@ body.about-page {
     height: 250px;
   }
   .page-list {
-    height: 300px;
+    height: 160px;
   }
   .balance-section {
     height: 160px;

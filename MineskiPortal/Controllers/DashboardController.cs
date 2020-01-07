@@ -12,6 +12,9 @@ using MineskiPortal.Helpers;
 using System.Globalization;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Http;
+using System.Threading.Tasks;
+using System.IO;
 
 namespace MineskiPortal.Controllers
 {
@@ -65,6 +68,19 @@ namespace MineskiPortal.Controllers
         }
 
         [Authorize(Roles = "Administrator")]
+        public IActionResult FileManagers()
+        {
+            using (var db = new LiteDatabase(@"Mineski.db"))
+            {
+                var query = db.GetCollection<FileModel>("fileManagers");
+                var results = query.FindAll();
+                ViewBag.datasource = results.ToList();
+            }
+            return View();
+
+        }
+
+        [Authorize(Roles = "Administrator")]
         public IActionResult UserEvent()
         {
             using (var db = new LiteDatabase(@"Mineski.db"))
@@ -95,7 +111,77 @@ namespace MineskiPortal.Controllers
             public Int32 Id { get; set; }
             public string RoleName { get; set; }
         }
+        public IActionResult AddFilePartial([FromBody] CRUDModel<FileModel> value)
+        {
+            using (var db = new LiteDatabase(@"Mineski.db"))
+            {
+                var query = db.GetCollection<Events>("fileManagers");
+                var maxId = query.Max(x => x.Id);
+                ViewBag.maxId = maxId.AsInt32 + 1;
+            }
+            return PartialView("_AddFilePartial");
+        }
+      
 
+        [HttpPost]
+        public async Task<JsonResult> FileCreate(string Section, string Procedure, string Form, string Title, string Element, IFormFile URL, string EksternalUrl, string Work)
+        {
+            string urlFileMame = "";
+            try
+            {
+
+                using (var db = new LiteDatabase(@"Mineski.db"))
+                {
+                    // Get customer collection
+                    var files = db.GetCollection<FileModel>("fileManagers");
+                    if (URL != null)
+                    {
+                        IActionResult actionResult = await UploadFile(URL);
+                        urlFileMame = URL.FileName;
+                    }
+
+
+                    var fileData = new FileModel
+                    {
+                        Section = Section,
+                        Procedure = Procedure,
+                        Form = Form,
+                        Title = Title,
+                        Element = Element,
+                        URL = urlFileMame,
+                        EksternalUrl = EksternalUrl,
+                        Work = Work
+
+                    };
+
+                    // Insert new customer document (Id will be auto-incremented)
+                    files.Insert(fileData);
+                }
+            }
+            catch (Exception exception)
+            {
+                return Json(new { success = false, responseText = exception.Message });
+            }
+
+            return Json(new { success = true });
+        }
+
+        public async Task<IActionResult> UploadFile(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return Content("file not selected");
+
+            var path = Path.Combine(
+                        Directory.GetCurrentDirectory(), "wwwroot", "uploads",
+                        file.FileName);
+
+            using (var stream = new FileStream(path, System.IO.FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            return RedirectToAction("Files");
+        }
         public IActionResult AddAccountPartial([FromBody] CRUDModel<Events> value)
         {
             using (var db = new LiteDatabase(@"Mineski.db"))
@@ -369,7 +455,7 @@ namespace MineskiPortal.Controllers
         public IActionResult Logout()
         {
             var login = HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Dashboard");
         }
 
         [HttpPost]

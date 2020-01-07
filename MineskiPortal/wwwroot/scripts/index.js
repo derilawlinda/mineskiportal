@@ -15,19 +15,20 @@ var dataSource = [];
 var menu = HTMLElement;
 var overlay = HTMLElement;
 
-var MineskiDashboard;
-(function (MineskiDashboard) {
-	MineskiDashboard[MineskiDashboard["index"] = 0] = "index";
-	MineskiDashboard[MineskiDashboard["userEvent"] = 1] = "userEvent";
-	MineskiDashboard[MineskiDashboard["userNonEvent"] = 2] = "userNonEvent";
-	MineskiDashboard[MineskiDashboard["events"] = 3] = "events";
-	MineskiDashboard[MineskiDashboard["dashboard"] = 4] = "dashboard";
-	MineskiDashboard[MineskiDashboard["accounts"] = 5] = "accounts";
-	MineskiDashboard[MineskiDashboard["cabangs"] = 6] = "cabangs";
+var FileManagerDashboard;
+(function (FileManagerDashboard) {
+	FileManagerDashboard[FileManagerDashboard["index"] = 0] = "index";
+	FileManagerDashboard[FileManagerDashboard["userEvent"] = 1] = "userEvent";
+	FileManagerDashboard[FileManagerDashboard["userNonEvent"] = 2] = "userNonEvent";
+	FileManagerDashboard[FileManagerDashboard["events"] = 3] = "events";
+	FileManagerDashboard[FileManagerDashboard["dashboard"] = 4] = "dashboard";
+	FileManagerDashboard[FileManagerDashboard["accounts"] = 5] = "accounts";
+	FileManagerDashboard[FileManagerDashboard["cabangs"] = 6] = "cabangs";
+	FileManagerDashboard[FileManagerDashboard["filemanagers"] = 7] = "filemanagers";
 
-})(MineskiDashboard || (MineskiDashboard = {}));
+})(FileManagerDashboard || (FileManagerDashboard = {}));
 
-console.log(MineskiDashboard);
+console.log(FileManagerDashboard);
 
 /* tslint:disable-next-line */
 function updateDate(list) {
@@ -40,20 +41,21 @@ function parseDate(date) {
 handleResize();
 function getCurrentPage() {
 	// var currentPage;
-	if ((window.location.hash === '#/' + MineskiDashboard[MineskiDashboard.dashboard])) {
-		currentPage = MineskiDashboard[MineskiDashboard.dashboard];
-	} else if ((window.location.hash === '#/' + MineskiDashboard[MineskiDashboard.userEvent])) {
-		currentPage = MineskiDashboard[MineskiDashboard.userEvent];
-	} else if ((window.location.hash === '#/' + MineskiDashboard[MineskiDashboard.userNonEvent])) {
-		currentPage = MineskiDashboard[MineskiDashboard.userNonEvent];
-	} else if ((window.location.hash === '#/' + MineskiDashboard[MineskiDashboard.events])) {
-		currentPage = MineskiDashboard[MineskiDashboard.events];
-	} else if ((window.location.hash === '#/' + MineskiDashboard[MineskiDashboard.accounts])) {
-		currentPage = MineskiDashboard[MineskiDashboard.accounts];
-	} else if ((window.location.hash === '#/' + MineskiDashboard[MineskiDashboard.cabangs])) {
-		currentPage = MineskiDashboard[MineskiDashboard.cabangs];
+	if ((window.location.hash === '#/' + FileManagerDashboard[FileManagerDashboard.dashboard])) {
+		currentPage = FileManagerDashboard[FileManagerDashboard.dashboard];
+	} else if ((window.location.hash === '#/' + FileManagerDashboard[FileManagerDashboard.userEvent])) {
+		currentPage = FileManagerDashboard[FileManagerDashboard.userEvent];
+	} else if ((window.location.hash === '#/' + FileManagerDashboard[FileManagerDashboard.userNonEvent])) {
+		currentPage = FileManagerDashboard[FileManagerDashboard.userNonEvent];
+	} else if ((window.location.hash === '#/' + FileManagerDashboard[FileManagerDashboard.events])) {
+		currentPage = FileManagerDashboard[FileManagerDashboard.events];
+	} else if ((window.location.hash === '#/' + FileManagerDashboard[FileManagerDashboard.accounts])) {
+		currentPage = FileManagerDashboard[FileManagerDashboard.accounts];
+	} else if ((window.location.hash === '#/' + FileManagerDashboard[FileManagerDashboard.cabangs])) {
+		currentPage = FileManagerDashboard[FileManagerDashboard.cabangs];
+	} else if ((window.location.hash === '#/' + FileManagerDashboard[FileManagerDashboard.filemanagers])) {
+		currentPage = FileManagerDashboard[FileManagerDashboard.filemanagers];
 	}
-	console.log(currentPage)
 	return currentPage;
 }
 
@@ -88,28 +90,29 @@ crossroads.addRoute('/:lang:', function () {
 
 			renderControl("content");
 
-			if ((currentPage === MineskiDashboard[MineskiDashboard.dashboard]) ||
-				('#/' + MineskiDashboard[MineskiDashboard.dashboard] === window.location.hash)) {
+			if ((currentPage === FileManagerDashboard[FileManagerDashboard.dashboard]) ||
+				('#/' + FileManagerDashboard[FileManagerDashboard.dashboard] === window.location.hash)) {
 				window.dashboard();
 	
-			} else if ((currentPage === MineskiDashboard[MineskiDashboard.userEvent]) ||
-				('#/' + MineskiDashboard[MineskiDashboard.expense] === window.location.hash)) {
-		
-			} else if ((currentPage === MineskiDashboard[MineskiDashboard.userNonEvent]) ||
-				('#/' + MineskiDashboard[MineskiDashboard.about] === window.location.hash)) {
+			} else if ((currentPage === FileManagerDashboard[FileManagerDashboard.userEvent]) ||
+				('#/' + FileManagerDashboard[FileManagerDashboard.expense] === window.location.hash)) { }
+			else if ((currentPage === FileManagerDashboard[FileManagerDashboard.userNonEvent]) ||
+				('#/' + FileManagerDashboard[FileManagerDashboard.about] === window.location.hash)) {
+			} else if ((currentPage === FileManagerDashboard[FileManagerDashboard.events]) ||
+				('#/' + FileManagerDashboard[FileManagerDashboard.about] === window.location.hash)) {
 
-			} else if ((currentPage === MineskiDashboard[MineskiDashboard.events]) ||
-				('#/' + MineskiDashboard[MineskiDashboard.about] === window.location.hash)) {
+			} else if ((currentPage === FileManagerDashboard[FileManagerDashboard.accounts]) ||
+				('#/' + FileManagerDashboard[FileManagerDashboard.accounts] === window.location.hash)) {
 
-			} else if ((currentPage === MineskiDashboard[MineskiDashboard.accounts]) ||
-				('#/' + MineskiDashboard[MineskiDashboard.accounts] === window.location.hash)) {
+			} else if ((currentPage === FileManagerDashboard[FileManagerDashboard.filemanagers]) ||
+				('#/' + FileManagerDashboard[FileManagerDashboard.filemanagers] === window.location.hash)) {
 
 			}
 		});
 	}
-}).rules = { lang: ['index', 'dashboard', 'userEvent', 'userNonEvent', 'events','accounts','cabangs'] };
+}).rules = { lang: ['index', 'dashboard', 'userEvent', 'userNonEvent', 'events','accounts','cabangs','filemanagers'] };
 crossroads.bypassed.add(function (request) {
-	var samplePath = ['index', 'dashboard', 'userEvent', 'userNonEvent', 'events','accounts','cabangs'];
+	var samplePath = ['index', 'dashboard', 'userEvent', 'userNonEvent', 'events','accounts','cabangs','filemanagers'];
 	var hash = request.split(' ')[0];
 	if (samplePath.indexOf(hash) === -1) {
 		location.hash = '#/' + samplePath[0];

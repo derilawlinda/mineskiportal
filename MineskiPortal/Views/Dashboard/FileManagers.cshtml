@@ -1,0 +1,115 @@
+﻿@{
+    Layout = null;
+}
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Raleway:500,600" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+<link href="~/css/dasboard/styles.css" rel="stylesheet" />
+<link href="~/css/dasboard/index.css" rel="stylesheet" />
+<script src="~/scripts/ej2.min.js"></script>
+
+<script>
+    function actionComplete(args) {
+
+        if (args.requestType === 'add') {
+            let spinner = ej.popups.createSpinner({ target: args.dialog.element });
+            ej.popups.showSpinner(args.dialog.element);
+
+            if (args.requestType === 'add') {
+                var ajax = new ej.base.Ajax({
+                    url: "@Url.Action("AddFilePartial","Dashboard")", //render the partial view
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify({ value: args.rowData })
+                });
+                ajax.send().then(function (data) {
+                    appendElement(data, args.form); //Render the edit form with selected record
+                    ej.popups.hideSpinner(args.dialog.element);
+
+
+                }).catch(function (xhr) {
+                    ej.popups.hideSpinner(args.dialog.element);
+                });
+            }
+
+        }
+
+
+        if (args.requestType === 'save') {
+            console.log(args);
+             $.post('/Dashboard/FileCreate', {
+                         Section: args.data.Section,
+                         Procedure: args.data.Procedure,
+                         Title: args.data.Title,
+                         URL : args.data.URL,
+                         Element: args.data.Element,
+                         URL: args.data.URL,
+                         EksternalUrl: args.data.EksternalUrl,
+                         Work : args.data.Work
+
+                     }).done(function (data) {
+                         if (data.success == false) {
+
+                             $("#Username-info").show();
+                             $("#Username-info").text(data.responseText);
+
+                         } else {
+                             grid.dataSource.push(args.data);
+                             args.dialog.close();
+                             grid.refresh();
+                         }
+                     });
+        }
+    }
+
+    function actionBegin(args) {
+        console.log(args.requestType);
+        var grid = this;
+
+    }
+
+function appendElement(elementString, form) {
+    form.querySelector("#dialogTemp").innerHTML = elementString;
+    var script = document.createElement('script');
+    script.type = "text/javascript";
+    var serverScript = form.querySelector("#dialogTemp").querySelector('script');
+    script.textContent = serverScript.innerHTML;
+    document.head.appendChild(script);
+    serverScript.remove();
+ }
+</script>
+
+<script id='dialogtemplate' type="text/x-template">
+    <div id="dialogTemp">
+    </div>
+</script>
+
+<body>
+    <div>
+        <h1 class="page-title"> File Manager </h1>
+    </div>
+    <div>
+        <div class="col-md-12 margin-top col-lg-12">
+            <ejs-grid id="grid" dataSource="ViewBag.datasource" actionComplete="actionComplete" actionBegin="actionBegin" allowExcelExport="true" allowFiltering="true" allowSorting="true" height="300px" allowGrouping="true" allowPaging="true" toolbar="@(new List<string>() {  "Add" })">
+                <e-grid-editSettings allowAdding="true" mode="Dialog" template='#dialogtemplate'></e-grid-editSettings>
+                <e-grid-filterSettings type="Menu"></e-grid-filterSettings>
+                <e-grid-pagesettings pageCount="5"></e-grid-pagesettings>
+                <e-grid-columns>
+                    <e-grid-column field="Id" headerText="ID" isPrimaryKey="true" type="number" width="75"></e-grid-column>
+                    <e-grid-column field="Section" type="string" headerText="Section" width="150"></e-grid-column>
+                    <e-grid-column field="Procedure" type="string" headerText="Procedure" width="150"></e-grid-column>
+                    <e-grid-column field="Form" type="string" headerText="Form" width="150"></e-grid-column>
+                    <e-grid-column field="Title" type="string" headerText="Title" width="150"></e-grid-column>
+                    <e-grid-column field="Element" type="string" headerText="Element" width="150"></e-grid-column>
+                    <e-grid-column field="URL" type="string" headerText="URL" width="150"></e-grid-column>
+                    <e-grid-column field="EksternalUrl" type="string" headerText="EksternalUrl" width="150"></e-grid-column>
+                    <e-grid-column field="Work" type="string" headerText="Work" width="150"></e-grid-column>
+                </e-grid-columns>
+
+            </ejs-grid>
+
+            <ejs-scripts></ejs-scripts>
+        </div>
+    </div>
+</body>
+
